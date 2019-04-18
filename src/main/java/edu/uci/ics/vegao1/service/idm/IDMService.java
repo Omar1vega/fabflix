@@ -1,10 +1,10 @@
-package edu.uci.ics.ucinetid.service.idm;
+package edu.uci.ics.vegao1.service.idm;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import edu.uci.ics.ucinetid.service.idm.configs.Configs;
-import edu.uci.ics.ucinetid.service.idm.logger.ServiceLogger;
-import edu.uci.ics.ucinetid.service.idm.models.ConfigsModel;
+import edu.uci.ics.vegao1.service.idm.configs.Configs;
+import edu.uci.ics.vegao1.service.idm.logger.ServiceLogger;
+import edu.uci.ics.vegao1.service.idm.models.ConfigsModel;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.internal.util.ExceptionUtils;
@@ -14,7 +14,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import javax.ws.rs.core.UriBuilder;
 import java.io.File;
 import java.io.IOException;
-import java.net.*;
+import java.net.URI;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

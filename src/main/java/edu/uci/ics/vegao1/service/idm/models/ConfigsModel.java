@@ -1,4 +1,4 @@
-package edu.uci.ics.ucinetid.service.idm.models;
+package edu.uci.ics.vegao1.service.idm.models;
 
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package edu.uci.ics.ucinetid.service.idm.logger;
+package edu.uci.ics.vegao1.service.idm.logger;
 
 import java.io.File;
 import java.io.IOException;

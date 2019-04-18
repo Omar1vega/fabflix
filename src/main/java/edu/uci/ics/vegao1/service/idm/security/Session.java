@@ -1,4 +1,4 @@
-package edu.uci.ics.ucinetid.service.idm.security;
+package edu.uci.ics.vegao1.service.idm.security;
 
 import java.sql.Timestamp;
 
@@ -77,10 +77,7 @@ public class Session {
         }
         // Verify that the current time is not AFTER the time of last use, causing a timeout.
         Timestamp timeoutTime = new Timestamp(lastUsed.getTime() + SESSION_TIMEOUT);
-        if (currentTime.after(timeoutTime)) {
-            return false;
-        }
-        return true;
+        return !currentTime.after(timeoutTime);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package edu.uci.ics.ucinetid.service.idm.security;
+package edu.uci.ics.vegao1.service.idm.security;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;

@@ -1,7 +1,7 @@
-package edu.uci.ics.ucinetid.service.idm.configs;
+package edu.uci.ics.vegao1.service.idm.configs;
 
-import edu.uci.ics.ucinetid.service.idm.logger.ServiceLogger;
-import edu.uci.ics.ucinetid.service.idm.models.ConfigsModel;
+import edu.uci.ics.vegao1.service.idm.logger.ServiceLogger;
+import edu.uci.ics.vegao1.service.idm.models.ConfigsModel;
 
 public class Configs {
     private final int MIN_SERVICE_PORT = 1024;
