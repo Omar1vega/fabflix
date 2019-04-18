@@ -146,6 +146,7 @@ public class IDMService {
             ServiceLogger.LOGGER.config("Final URI: " + uri.toString());
             ResourceConfig rc = new ResourceConfig().packages("edu.uci.ics.vegao1.service.idm.resources");
             ServiceLogger.LOGGER.config("Set Jersey resources.");
+            ServiceLogger.LOGGER.config(rc.getClasses().toString());
             rc.register(JacksonFeature.class);
             ServiceLogger.LOGGER.config("Set Jackson as serializer.");
             ServiceLogger.LOGGER.config("Starting HTTP server...");
