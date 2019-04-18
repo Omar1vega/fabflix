@@ -144,7 +144,7 @@ public class IDMService {
             ServiceLogger.LOGGER.config("Building URI from configs...");
             URI uri = UriBuilder.fromUri(scheme + hostName + path).port(port).build();
             ServiceLogger.LOGGER.config("Final URI: " + uri.toString());
-            ResourceConfig rc = new ResourceConfig().packages("edu.uci.ics.ucinetid.service.idm.resources");
+            ResourceConfig rc = new ResourceConfig().packages("edu.uci.ics.vegao1.service.idm.resources");
             ServiceLogger.LOGGER.config("Set Jersey resources.");
             rc.register(JacksonFeature.class);
             ServiceLogger.LOGGER.config("Set Jackson as serializer.");
