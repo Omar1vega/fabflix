@@ -36,10 +36,10 @@ public class RegisterPage {
             return processRequest(request);
         } catch (JsonMappingException e) {
             ServiceLogger.LOGGER.info(e.getClass().getCanonicalName() + e.getLocalizedMessage());
-            return Response.status(Response.Status.BAD_REQUEST).entity(new RegisterResponseModel(-3, "JSON Parse Exception.")).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new RegisterResponseModel(-2, "JSON Mapping Exception.")).build();
         } catch (JsonParseException e) {
             ServiceLogger.LOGGER.info(e.getClass().getCanonicalName() + e.getLocalizedMessage());
-            return Response.status(Response.Status.BAD_REQUEST).entity(new RegisterResponseModel(-2, "JSON Mapping Exception.")).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new RegisterResponseModel(-3, "JSON Parse Exception.")).build();
         } catch (IOException e) {
             ServiceLogger.LOGGER.info(e.getClass().getCanonicalName() + e.getLocalizedMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
@@ -63,15 +63,15 @@ public class RegisterPage {
         }
 
         if (password.length < 7 || password.length > 16) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(new RegisterResponseModel(12, "Password has invalid length (cannot be empty/null).")).build();
+            return Response.status(Response.Status.OK).entity(new RegisterResponseModel(12, "Password does not meet length requirements")).build();
         }
 
         if (!validPassword(password)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(new RegisterResponseModel(13, "Password does not meet character requirements")).build();
+            return Response.status(Response.Status.OK).entity(new RegisterResponseModel(13, "Password does not meet character requirements")).build();
         }
 
         if (UserRecords.emailInUse(email)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(new RegisterResponseModel(16, "Email already in use.")).build();
+            return Response.status(Response.Status.OK).entity(new RegisterResponseModel(16, "Email already in use.")).build();
         }
 
         UserRecords.createUser(requestModel);
@@ -91,7 +91,7 @@ public class RegisterPage {
             if (Character.isDigit(c)) {
                 numeric = true;
             }
-            if (!(Character.isAlphabetic(c) && Character.isDigit(c))) {
+            if (!Character.isAlphabetic(c) && !Character.isDigit(c)) {
                 symbol = true;
             }
         }

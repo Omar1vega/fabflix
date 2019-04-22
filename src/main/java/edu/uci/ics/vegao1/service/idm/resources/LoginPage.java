@@ -67,10 +67,10 @@ public class LoginPage {
 
         } catch (JsonMappingException e) {
             ServiceLogger.LOGGER.info(e.getClass().getCanonicalName() + e.getLocalizedMessage());
-            return Response.status(Response.Status.BAD_REQUEST).entity(new RegisterResponseModel(-3, "JSON Parse Exception.")).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new RegisterResponseModel(-2, "JSON Mapping Exception.")).build();
         } catch (JsonParseException e) {
             ServiceLogger.LOGGER.info(e.getClass().getCanonicalName() + e.getLocalizedMessage());
-            return Response.status(Response.Status.BAD_REQUEST).entity(new RegisterResponseModel(-2, "JSON Mapping Exception.")).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new RegisterResponseModel(-3, "JSON Parse Exception.")).build();
         } catch (IOException | DecoderException e) {
             ServiceLogger.LOGGER.info(e.getClass().getCanonicalName() + e.getLocalizedMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();

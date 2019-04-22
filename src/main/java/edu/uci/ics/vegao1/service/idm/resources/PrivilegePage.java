@@ -50,7 +50,7 @@ public class PrivilegePage {
                     }
 
                 } else {// Privilege level out of valid range.
-                    return Response.status(Response.Status.OK).entity(new RegisterResponseModel(-14, "Privilege level out of valid range.")).build();
+                    return Response.status(Response.Status.BAD_REQUEST).entity(new RegisterResponseModel(-14, "Privilege level out of valid range.")).build();
                 }
 
             } else {
@@ -59,10 +59,10 @@ public class PrivilegePage {
 
         } catch (JsonMappingException e) {
             ServiceLogger.LOGGER.info(e.getClass().getCanonicalName() + e.getLocalizedMessage());
-            return Response.status(Response.Status.BAD_REQUEST).entity(new RegisterResponseModel(-3, "JSON Parse Exception.")).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new RegisterResponseModel(-2, "JSON Mapping Exception.")).build();
         } catch (JsonParseException e) {
             ServiceLogger.LOGGER.info(e.getClass().getCanonicalName() + e.getLocalizedMessage());
-            return Response.status(Response.Status.BAD_REQUEST).entity(new RegisterResponseModel(-2, "JSON Mapping Exception.")).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new RegisterResponseModel(-3, "JSON Parse Exception.")).build();
         } catch (IOException e) {
             ServiceLogger.LOGGER.info(e.getClass().getCanonicalName() + e.getLocalizedMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
