@@ -1,5 +1,7 @@
 package edu.uci.ics.vegao1.service.idm.security;
 
+import org.apache.commons.codec.binary.Hex;
+
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
@@ -24,6 +26,16 @@ public final class Crypto {
             SecretKeyFactory skf = SecretKeyFactory.getInstance(hashFunction);
             PBEKeySpec spec = new PBEKeySpec(password, salt, iterations, keyLength);
             return skf.generateSecret(spec).getEncoded();
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String hashPassword(final char[] password, final byte[] salt) {
+        try {
+            SecretKeyFactory skf = SecretKeyFactory.getInstance(hashFunction);
+            PBEKeySpec spec = new PBEKeySpec(password, salt, ITERATIONS, KEY_LENGTH);
+            return Hex.encodeHexString(skf.generateSecret(spec).getEncoded());
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new RuntimeException(e);
         }
