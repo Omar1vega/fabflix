@@ -1,4 +1,4 @@
-package edu.uci.ics.vegao1.service.idm.records;
+package edu.uci.ics.vegao1.service.idm.records.user;
 
 import edu.uci.ics.vegao1.service.idm.IDMService;
 import edu.uci.ics.vegao1.service.idm.logger.ServiceLogger;
@@ -14,6 +14,7 @@ public class UserRecords {
     private static final int DEFAULT_USER_STATUS = 1;
     private static final int DEFAULT_USER_P_LEVEL = 5;
     private static final String EMAIL_CHECK_STATEMENT = "SELECT 1 FROM users WHERE email=?";
+    private static final String GET_USER_STATEMENT = "SELECT * FROM users WHERE email=?";
     private static final String INSERT_USER_STATEMENT = "INSERT INTO users (email, status, plevel, salt, pword) VALUES (?, ?, ?, ?, ?)";
 
     public static boolean emailInUse(String email) {
@@ -47,6 +48,29 @@ public class UserRecords {
         } catch (SQLException e) {
             ServiceLogger.LOGGER.info("Unable to insert user into database");
         }
+    }
+
+    public static UserRecord getUser(String email) {
+        ServiceLogger.LOGGER.info("Retreiving user from database with email: " + email);
+        UserRecord userRecord = null;
+        try {
+            PreparedStatement statement = IDMService.getCon().prepareStatement(GET_USER_STATEMENT);
+            statement.setString(1, email.trim());
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                int status = resultSet.getInt("status");
+                int plevel = resultSet.getInt("plevel");
+                String salt = resultSet.getString("salt");
+                String pword = resultSet.getString("pword");
+                userRecord = new UserRecord(id, email, status, plevel, salt, pword);
+            }
+
+        } catch (SQLException e) {
+            ServiceLogger.LOGGER.info("Unable to insert user into database");
+        }
+        return userRecord;
     }
 
 

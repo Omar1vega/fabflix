@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.uci.ics.vegao1.service.idm.logger.ServiceLogger;
 import edu.uci.ics.vegao1.service.idm.models.RegisterRequestModel;
 import edu.uci.ics.vegao1.service.idm.models.RegisterResponseModel;
-import edu.uci.ics.vegao1.service.idm.records.UserRecords;
+import edu.uci.ics.vegao1.service.idm.records.user.UserRecords;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
