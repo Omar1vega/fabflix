@@ -24,11 +24,11 @@ public class Token implements Comparable<Token> {
 
     @Override
     public String toString() {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder stringBuilder = new StringBuilder();
         for (byte b : token) {
-            buf.append(format(Integer.toHexString(Byte.toUnsignedInt(b))));
+            stringBuilder.append(format(Integer.toHexString(Byte.toUnsignedInt(b))));
         }
-        return buf.toString();
+        return stringBuilder.toString();
     }
 
     private String format(String binS) {
