@@ -2,6 +2,7 @@ package edu.uci.ics.vegao1.service.idm.configs;
 
 import edu.uci.ics.vegao1.service.idm.logger.ServiceLogger;
 import edu.uci.ics.vegao1.service.idm.models.ConfigsModel;
+import edu.uci.ics.vegao1.service.idm.security.Session;
 
 public class Configs {
     private final int MIN_SERVICE_PORT = 1024;
@@ -9,7 +10,7 @@ public class Configs {
     // Default service configs
     private final String DEFAULT_SCHEME = "http://";
     private final String DEFAULT_HOSTNAME = "0.0.0.0";
-    private final int    DEFAULT_PORT = 1234;
+    private final int DEFAULT_PORT = 1234;
     private final String DEFAULT_PATH = "/api/idm";
     // Default logger configs
     private final String DEFAULT_OUTPUTDIR = "./logs/";
@@ -18,7 +19,7 @@ public class Configs {
     // Service configs
     private String scheme;
     private String hostName;
-    private int    port;
+    private int port;
     private String path;
     // Logger configs
     private String outputDir;
@@ -27,10 +28,14 @@ public class Configs {
     private String dbUsername;
     private String dbPassword;
     private String dbHostname;
-    private int    dbPort;
+    private int dbPort;
     private String dbName;
     private String dbDriver;
     private String dbSettings;
+
+    //Session Configs
+    private long timeout;
+    private long expiration;
 
     private boolean dbConfigValid = true;
 
@@ -160,6 +165,22 @@ public class Configs {
             } else {
                 System.err.println("Database connection settings: " + dbSettings);
             }
+
+            timeout = Long.parseLong(cm.getSessionConfig().get("timeout"));
+            if (timeout == 0) {
+                System.err.println("No timeout found in configuration file.");
+            } else {
+                timeout = Session.SESSION_TIMEOUT;
+                System.err.println("timeout : " + timeout);
+            }
+
+            expiration = Long.parseLong(cm.getSessionConfig().get("expiration"));
+            if (expiration == 0) {
+                System.err.println("No expiration found in configuration file.");
+            } else {
+                expiration = Session.TOKEN_EXPR;
+                System.err.println("expiration : " + expiration);
+            }
         }
     }
 
@@ -237,5 +258,13 @@ public class Configs {
 
     public boolean isDbConfigValid() {
         return dbConfigValid;
+    }
+
+    public long getTimeout() {
+        return timeout;
+    }
+
+    public long getExpiration() {
+        return expiration;
     }
 }
