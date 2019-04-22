@@ -1,5 +1,7 @@
 package edu.uci.ics.vegao1.service.idm.security;
 
+import edu.uci.ics.vegao1.service.idm.IDMService;
+
 import java.sql.Timestamp;
 
 public class Session {
@@ -25,7 +27,7 @@ public class Session {
         this.email = email;
         this.timeCreated = new Timestamp(System.currentTimeMillis());
         this.lastUsed = timeCreated;
-        this.exprTime = new Timestamp(System.currentTimeMillis() + TOKEN_EXPR);
+        this.exprTime = new Timestamp(System.currentTimeMillis() + IDMService.getConfigs().getExpiration());
     }
 
     /*
