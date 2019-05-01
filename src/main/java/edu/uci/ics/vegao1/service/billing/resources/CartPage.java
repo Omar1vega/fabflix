@@ -29,7 +29,7 @@ public class CartPage {
             CartInsertRequestModel cartInsertRequest = request.getRequestModel();
 
             ResponseModel emailCheck = UserValidations.validateEmail(cartInsertRequest.getEmail());
-            if (emailCheck == ResponseModel.VALID_REQUEST) {
+            if (emailCheck != ResponseModel.VALID_REQUEST) {
                 return Response.status(Response.Status.BAD_REQUEST).entity(emailCheck).build();
             }
 
@@ -56,7 +56,7 @@ public class CartPage {
             CartInsertRequestModel cartInsertRequest = request.getRequestModel();
 
             ResponseModel emailCheck = UserValidations.validateEmail(cartInsertRequest.getEmail());
-            if (emailCheck == ResponseModel.VALID_REQUEST) {
+            if (emailCheck != ResponseModel.VALID_REQUEST) {
                 return Response.status(Response.Status.BAD_REQUEST).entity(emailCheck).build();
             }
 
