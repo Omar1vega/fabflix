@@ -28,10 +28,10 @@ public class RequestWrapper<T> {
             return new RequestWrapper<>(request);
         } catch (JsonMappingException e) {
             ServiceLogger.LOGGER.info(e.getClass().getCanonicalName() + e.getLocalizedMessage());
-            return new RequestWrapper<>(Response.status(Response.Status.BAD_REQUEST).entity(new ResponseModel(-2, "JSON Mapping Exception.")).build());
+            return new RequestWrapper<>(Response.status(Response.Status.BAD_REQUEST).entity(ResponseModel.JSON_MAPPING_EXCEPTION).build());
         } catch (JsonParseException e) {
             ServiceLogger.LOGGER.info(e.getClass().getCanonicalName() + e.getLocalizedMessage());
-            return new RequestWrapper<>(Response.status(Response.Status.BAD_REQUEST).entity(new ResponseModel(-3, "JSON Parse Exception.")).build());
+            return new RequestWrapper<>(Response.status(Response.Status.BAD_REQUEST).entity(ResponseModel.JSON_PARSE_EXCEPTION).build());
         } catch (IOException e) {
             ServiceLogger.LOGGER.info(e.getClass().getCanonicalName() + e.getLocalizedMessage());
             return new RequestWrapper<>(Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());

@@ -1,54 +1,56 @@
 package edu.uci.ics.vegao1.service.billing.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Objects;
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
+public enum ResponseModel {
+    EMAIL_INVALID_FORMAT(-11, "Email address has invalid format."),
+    EMAIL_INVALID_LENGTH(-10, "Email address has invalid length"),
+    JSON_PARSE_EXCEPTION(-3, "JSON Parse Exception."),
+    JSON_MAPPING_EXCEPTION(-2, "JSON Mapping Exception."),
+    QUANTITY_INVALID(33, "Quantity has invalid value."),
+    DUPLICATE_INSERTION(311, " Duplicate insertion"),
+    ITEM_DOES_NOT_EXIST(312, "Shopping item does not exist"),
+    SHOPPING_CART_INSERT_SUCCESSFUL(3100, "Shopping cart item inserted successfully."),
+    SHOPPING_CART_UPDATE_SUCCESSFUL(3100, "Shopping cart item updated successfully."),
+    SHOPPING_CART_DELETE_SUCCESSFUL(3120, "Shopping cart item deleted successfully."),
+    SHOPPING_CART_RETRIEVED_SUCCESSFUL(3130, "Shopping cart retrieved successfully"),
+    VALID_REQUEST(420, "Blaze it");
 
-public class ResponseModel {
+
     private int resultCode;
     private String message;
 
-    @JsonCreator
-    public ResponseModel() {
-    }
 
-    public ResponseModel(int resultCode, String message) {
+    ResponseModel(@JsonProperty("resultCode") int resultCode, @JsonProperty("message") String message) {
         this.resultCode = resultCode;
         this.message = message;
     }
 
 
     @SuppressWarnings("unused") //Used by Jackson
+    @JsonProperty("resultCode")
     public int getResultCode() {
         return resultCode;
     }
 
     @SuppressWarnings("unused") //Used by Jackson
+    @JsonProperty("resultCode")
     public void setResultCode(int resultCode) {
         this.resultCode = resultCode;
     }
 
+
     @SuppressWarnings("unused") //Used by Jackson
+    @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
     @SuppressWarnings("unused") //Used by Jackson
+    @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ResponseModel that = (ResponseModel) o;
-        return getResultCode() == that.getResultCode() &&
-                getMessage().equals(that.getMessage());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getResultCode(), getMessage());
     }
 }

@@ -2,7 +2,6 @@ package edu.uci.ics.vegao1.service.billing.resources;
 
 import edu.uci.ics.vegao1.service.billing.logger.ServiceLogger;
 import edu.uci.ics.vegao1.service.billing.models.CartInsertRequestModel;
-import edu.uci.ics.vegao1.service.billing.models.RModel;
 import edu.uci.ics.vegao1.service.billing.models.RequestWrapper;
 import edu.uci.ics.vegao1.service.billing.models.ResponseModel;
 import edu.uci.ics.vegao1.service.billing.records.CartRecords;
@@ -14,8 +13,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import static edu.uci.ics.vegao1.service.billing.validation.UserValidations.VALID_REQUEST;
 
 @Path("cart")
 public class CartPage {
@@ -32,12 +29,12 @@ public class CartPage {
             CartInsertRequestModel cartInsertRequest = request.getRequestModel();
 
             ResponseModel emailCheck = UserValidations.validateEmail(cartInsertRequest.getEmail());
-            if (!emailCheck.equals(VALID_REQUEST)) {
+            if (emailCheck == ResponseModel.VALID_REQUEST) {
                 return Response.status(Response.Status.BAD_REQUEST).entity(emailCheck).build();
             }
 
             if (cartInsertRequest.getQuantity() < 1) {
-                return Response.status(Response.Status.OK).entity(RModel.QUANTITY_INVALID).build();
+                return Response.status(Response.Status.OK).entity(ResponseModel.QUANTITY_INVALID).build();
             }
 
             return Response.status(Response.Status.OK).entity(CartRecords.insertCart(cartInsertRequest)).build();
@@ -59,12 +56,12 @@ public class CartPage {
             CartInsertRequestModel cartInsertRequest = request.getRequestModel();
 
             ResponseModel emailCheck = UserValidations.validateEmail(cartInsertRequest.getEmail());
-            if (!emailCheck.equals(VALID_REQUEST)) {
+            if (emailCheck == ResponseModel.VALID_REQUEST) {
                 return Response.status(Response.Status.BAD_REQUEST).entity(emailCheck).build();
             }
 
             if (cartInsertRequest.getQuantity() < 1) {
-                return Response.status(Response.Status.OK).entity(new ResponseModel(33, "Quantity has invalid value.")).build();
+                return Response.status(Response.Status.OK).entity(ResponseModel.QUANTITY_INVALID).build();
             }
 
             return Response.status(Response.Status.OK).entity(CartRecords.insertCart(cartInsertRequest)).build();

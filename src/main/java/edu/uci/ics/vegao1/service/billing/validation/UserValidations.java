@@ -5,19 +5,18 @@ import edu.uci.ics.vegao1.service.billing.models.ResponseModel;
 import java.util.regex.Pattern;
 
 public class UserValidations {
-    public static final ResponseModel VALID_REQUEST = new ResponseModel(420, "");
     private static final int MAX_EMAIL_LENGTH = 50;
     private static final Pattern emailPattern = Pattern.compile("(^.+)@(.+)\\.(.+)");
 
 
     public static ResponseModel validateEmail(String email) {
         if (!emailPattern.matcher(email).matches()) {
-            return new ResponseModel(-11, "Email has invalid format.");
+            return ResponseModel.EMAIL_INVALID_FORMAT;
         }
 
         if (email.length() > MAX_EMAIL_LENGTH) {
-            return new ResponseModel(-10, "Email has invalid length.");
+            return ResponseModel.EMAIL_INVALID_LENGTH;
         }
-        return VALID_REQUEST;
+        return ResponseModel.VALID_REQUEST;
     }
 }

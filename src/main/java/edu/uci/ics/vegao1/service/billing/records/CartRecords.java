@@ -22,17 +22,17 @@ public class CartRecords {
             boolean rowAdded = statement.executeUpdate() > 0;
             if (rowAdded) {
                 ServiceLogger.LOGGER.info("Cart inserted successfully");
-                return new ResponseModel(3100, "Shopping cart item inserted successfully.");
+                return ResponseModel.SHOPPING_CART_INSERT_SUCCESSFUL;
             } else {
                 ServiceLogger.LOGGER.info("Unable to insert cart: ");
-                return new ResponseModel(311, " Duplicate insertion");
+                return ResponseModel.DUPLICATE_INSERTION;
             }
 
 
         } catch (Exception e) {
             //Case 311: Duplicate insertion.
             ServiceLogger.LOGGER.info("Unable to insert cart: " + e.getClass() + e.getCause().getLocalizedMessage());
-            return new ResponseModel(311, " Duplicate insertion");
+            return ResponseModel.DUPLICATE_INSERTION;
         }
     }
 
