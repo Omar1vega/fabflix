@@ -1,4 +1,4 @@
-package edu.uci.ics.ucinetid.service.billing.models;
+package edu.uci.ics.vegao1.service.billing.models;
 
 import java.util.Map;
 

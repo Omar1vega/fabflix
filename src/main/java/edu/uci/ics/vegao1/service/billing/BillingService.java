@@ -1,10 +1,10 @@
-package edu.uci.ics.ucinetid.service.billing;
+package edu.uci.ics.vegao1.service.billing;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import edu.uci.ics.ucinetid.service.billing.configs.Configs;
-import edu.uci.ics.ucinetid.service.billing.logger.ServiceLogger;
-import edu.uci.ics.ucinetid.service.billing.models.ConfigsModel;
+import edu.uci.ics.vegao1.service.billing.configs.Configs;
+import edu.uci.ics.vegao1.service.billing.logger.ServiceLogger;
+import edu.uci.ics.vegao1.service.billing.models.ConfigsModel;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.internal.util.ExceptionUtils;
@@ -14,7 +14,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import javax.ws.rs.core.UriBuilder;
 import java.io.File;
 import java.io.IOException;
-import java.net.*;
+import java.net.URI;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -144,7 +144,7 @@ public class BillingService {
             ServiceLogger.LOGGER.config("Building URI from configs...");
             URI uri = UriBuilder.fromUri(scheme + hostName + path).port(port).build();
             ServiceLogger.LOGGER.config("Final URI: " + uri.toString());
-            ResourceConfig rc = new ResourceConfig().packages("edu.uci.ics.ucinetid.service.billing.resources");
+            ResourceConfig rc = new ResourceConfig().packages("edu.uci.ics.vegao1.service.billing.resources");
             ServiceLogger.LOGGER.config("Set Jersey resources.");
             rc.register(JacksonFeature.class);
             ServiceLogger.LOGGER.config("Set Jackson as serializer.");
