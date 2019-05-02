@@ -1,8 +1,12 @@
 package edu.uci.ics.vegao1.service.billing.resources;
 
 import edu.uci.ics.vegao1.service.billing.logger.ServiceLogger;
-import edu.uci.ics.vegao1.service.billing.models.*;
-import edu.uci.ics.vegao1.service.billing.records.CartRecords;
+import edu.uci.ics.vegao1.service.billing.models.RequestWrapper;
+import edu.uci.ics.vegao1.service.billing.models.ResponseModel;
+import edu.uci.ics.vegao1.service.billing.models.cart.CartDeleteRequestModel;
+import edu.uci.ics.vegao1.service.billing.models.cart.CartInsertRequestModel;
+import edu.uci.ics.vegao1.service.billing.models.cart.CartRetrieveRequestModel;
+import edu.uci.ics.vegao1.service.billing.records.cart.CartRecords;
 import edu.uci.ics.vegao1.service.billing.validation.UserValidations;
 
 import javax.ws.rs.Consumes;

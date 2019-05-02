@@ -1,4 +1,4 @@
-package edu.uci.ics.vegao1.service.billing.models;
+package edu.uci.ics.vegao1.service.billing.models.cart;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

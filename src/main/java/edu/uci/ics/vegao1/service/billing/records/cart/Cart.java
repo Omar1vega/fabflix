@@ -1,4 +1,4 @@
-package edu.uci.ics.vegao1.service.billing.records;
+package edu.uci.ics.vegao1.service.billing.records.cart;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

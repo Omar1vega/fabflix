@@ -1,8 +1,12 @@
-package edu.uci.ics.vegao1.service.billing.records;
+package edu.uci.ics.vegao1.service.billing.records.cart;
 
 import edu.uci.ics.vegao1.service.billing.BillingService;
 import edu.uci.ics.vegao1.service.billing.logger.ServiceLogger;
-import edu.uci.ics.vegao1.service.billing.models.*;
+import edu.uci.ics.vegao1.service.billing.models.ResponseModel;
+import edu.uci.ics.vegao1.service.billing.models.cart.CartDeleteRequestModel;
+import edu.uci.ics.vegao1.service.billing.models.cart.CartInsertRequestModel;
+import edu.uci.ics.vegao1.service.billing.models.cart.CartRetrieveRequestModel;
+import edu.uci.ics.vegao1.service.billing.models.cart.CartRetrieveResponseModel;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

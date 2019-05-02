@@ -1,6 +1,7 @@
-package edu.uci.ics.vegao1.service.billing.models;
+package edu.uci.ics.vegao1.service.billing.models.cart;
 
-import edu.uci.ics.vegao1.service.billing.records.Cart;
+import edu.uci.ics.vegao1.service.billing.models.ResponseModel;
+import edu.uci.ics.vegao1.service.billing.records.cart.Cart;
 
 import java.util.List;
 
