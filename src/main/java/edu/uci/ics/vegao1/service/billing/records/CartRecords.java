@@ -14,6 +14,7 @@ public class CartRecords {
     private static final String INSERT_CART_STATEMENT = "INSERT IGNORE INTO carts (quantity, email, movieId) VALUES (?, ?, ?)";
     private static final String UPDATE_CART_STATEMENT = "UPDATE carts SET quantity = ? WHERE email = ? AND movieId = ?";
     private static final String DELETE_CART_STATEMENT = "DELETE FROM carts WHERE email = ? AND movieId = ?";
+    private static final String CLEAR_CART_STATEMENT = "DELETE FROM carts WHERE email = ?";
     private static final String RETRIEVE_CART_STATEMENT = "SELECT email, movieId, quantity FROM carts WHERE email = ?";
 
     public static ResponseModel insertCart(CartInsertRequestModel cartInsertRequest) {
@@ -41,7 +42,7 @@ public class CartRecords {
     }
 
     public static ResponseModel deleteCart(DeleteCartRequestModel cartDeleteRequest) {
-        ServiceLogger.LOGGER.info("preparing statement to update cart");
+        ServiceLogger.LOGGER.info("preparing statement to delete cart");
         try {
             PreparedStatement statement = BillingService.getCon().prepareStatement(DELETE_CART_STATEMENT);
             statement.setString(1, cartDeleteRequest.getEmail());
@@ -82,6 +83,23 @@ public class CartRecords {
         } catch (SQLException e) {
             ServiceLogger.LOGGER.info("Unable to execute query: " + e.getClass() + e.getCause().getLocalizedMessage());
             return CartRetrieveResponseModel.fromResponseModel(ResponseModel.ITEM_DOES_NOT_EXIST);
+        }
+    }
+
+    public static ResponseModel clearCart(RetrieveCartRequestModel clearCart) {
+        ServiceLogger.LOGGER.info("preparing statement to update cart");
+        try {
+            PreparedStatement statement = BillingService.getCon().prepareStatement(CLEAR_CART_STATEMENT);
+            statement.setString(1, clearCart.getEmail());
+
+            ServiceLogger.LOGGER.info("Executing query: " + statement.toString());
+            statement.execute();
+
+            return ResponseModel.SHOPPING_CART_CLEAR_SUCCESSFUL;
+
+        } catch (SQLException e) {
+            ServiceLogger.LOGGER.info("Unable to execute query: " + e.getClass() + e.getCause().getLocalizedMessage());
+            return ResponseModel.ITEM_DOES_NOT_EXIST;
         }
     }
 
