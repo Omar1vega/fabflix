@@ -14,6 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+@SuppressWarnings("Duplicates")
 @Path("cart")
 public class CartPage {
 
@@ -64,7 +65,7 @@ public class CartPage {
                 return Response.status(Response.Status.OK).entity(ResponseModel.QUANTITY_INVALID).build();
             }
 
-            return Response.status(Response.Status.OK).entity(CartRecords.insertCart(cartInsertRequest)).build();
+            return Response.status(Response.Status.OK).entity(CartRecords.updateCart(cartInsertRequest)).build();
         } else {
             ServiceLogger.LOGGER.info("request mapping was unsuccessful");
             return request.getResponse();
