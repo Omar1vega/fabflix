@@ -41,7 +41,7 @@ public class CartRecords {
         }
     }
 
-    public static ResponseModel deleteCart(DeleteCartRequestModel cartDeleteRequest) {
+    public static ResponseModel deleteCart(CartDeleteRequestModel cartDeleteRequest) {
         ServiceLogger.LOGGER.info("preparing statement to delete cart");
         try {
             PreparedStatement statement = BillingService.getCon().prepareStatement(DELETE_CART_STATEMENT);
@@ -62,7 +62,7 @@ public class CartRecords {
         }
     }
 
-    public static CartRetrieveResponseModel retrieveCart(RetrieveCartRequestModel retrieveCartRequest) {
+    public static CartRetrieveResponseModel retrieveCart(CartRetrieveRequestModel retrieveCartRequest) {
         ServiceLogger.LOGGER.info("preparing statement to retrieve cart");
         try {
             PreparedStatement statement = BillingService.getCon().prepareStatement(RETRIEVE_CART_STATEMENT);
@@ -86,7 +86,7 @@ public class CartRecords {
         }
     }
 
-    public static ResponseModel clearCart(RetrieveCartRequestModel clearCart) {
+    public static ResponseModel clearCart(CartRetrieveRequestModel clearCart) {
         ServiceLogger.LOGGER.info("preparing statement to update cart");
         try {
             PreparedStatement statement = BillingService.getCon().prepareStatement(CLEAR_CART_STATEMENT);

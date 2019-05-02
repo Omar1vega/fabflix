@@ -76,9 +76,9 @@ public class CartPage {
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteCart(String json) {
         ServiceLogger.LOGGER.info("Received request to delete cart");
-        RequestWrapper<DeleteCartRequestModel> request = RequestWrapper.map(json, DeleteCartRequestModel.class);
+        RequestWrapper<CartDeleteRequestModel> request = RequestWrapper.map(json, CartDeleteRequestModel.class);
         if (request.mappedSuccessfully()) {
-            DeleteCartRequestModel cartDeleteRequest = request.getRequestModel();
+            CartDeleteRequestModel cartDeleteRequest = request.getRequestModel();
 
             ResponseModel emailCheck = UserValidations.validateEmail(cartDeleteRequest.getEmail());
             if (emailCheck != ResponseModel.VALID_REQUEST) {
@@ -97,9 +97,9 @@ public class CartPage {
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveCart(String json) {
         ServiceLogger.LOGGER.info("Received request to retrieve cart");
-        RequestWrapper<RetrieveCartRequestModel> request = RequestWrapper.map(json, RetrieveCartRequestModel.class);
+        RequestWrapper<CartRetrieveRequestModel> request = RequestWrapper.map(json, CartRetrieveRequestModel.class);
         if (request.mappedSuccessfully()) {
-            RetrieveCartRequestModel cartDeleteRequest = request.getRequestModel();
+            CartRetrieveRequestModel cartDeleteRequest = request.getRequestModel();
 
             ResponseModel emailCheck = UserValidations.validateEmail(cartDeleteRequest.getEmail());
             if (emailCheck != ResponseModel.VALID_REQUEST) {
@@ -118,9 +118,9 @@ public class CartPage {
     @Produces(MediaType.APPLICATION_JSON)
     public Response clearCart(String json) {
         ServiceLogger.LOGGER.info("Received request to clear cart");
-        RequestWrapper<RetrieveCartRequestModel> request = RequestWrapper.map(json, RetrieveCartRequestModel.class);
+        RequestWrapper<CartRetrieveRequestModel> request = RequestWrapper.map(json, CartRetrieveRequestModel.class);
         if (request.mappedSuccessfully()) {
-            RetrieveCartRequestModel cartClearRequest = request.getRequestModel();
+            CartRetrieveRequestModel cartClearRequest = request.getRequestModel();
 
             ResponseModel emailCheck = UserValidations.validateEmail(cartClearRequest.getEmail());
             if (emailCheck != ResponseModel.VALID_REQUEST) {
