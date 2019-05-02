@@ -2,6 +2,7 @@ package edu.uci.ics.vegao1.service.billing.resources;
 
 import edu.uci.ics.vegao1.service.billing.logger.ServiceLogger;
 import edu.uci.ics.vegao1.service.billing.models.CartInsertRequestModel;
+import edu.uci.ics.vegao1.service.billing.models.DeleteCartRequestModel;
 import edu.uci.ics.vegao1.service.billing.models.RequestWrapper;
 import edu.uci.ics.vegao1.service.billing.models.ResponseModel;
 import edu.uci.ics.vegao1.service.billing.records.CartRecords;
@@ -66,6 +67,27 @@ public class CartPage {
             }
 
             return Response.status(Response.Status.OK).entity(CartRecords.updateCart(cartInsertRequest)).build();
+        } else {
+            ServiceLogger.LOGGER.info("request mapping was unsuccessful");
+            return request.getResponse();
+        }
+    }
+
+    @Path("delete")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteCart(String json) {
+        ServiceLogger.LOGGER.info("Received request to delete cart");
+        RequestWrapper<DeleteCartRequestModel> request = RequestWrapper.map(json, DeleteCartRequestModel.class);
+        if (request.mappedSuccessfully()) {
+            DeleteCartRequestModel cartDeleteRequest = request.getRequestModel();
+
+            ResponseModel emailCheck = UserValidations.validateEmail(cartDeleteRequest.getEmail());
+            if (emailCheck != ResponseModel.VALID_REQUEST) {
+                return Response.status(Response.Status.BAD_REQUEST).entity(emailCheck).build();
+            }
+            return Response.status(Response.Status.OK).entity(CartRecords.deleteCart(cartDeleteRequest)).build();
         } else {
             ServiceLogger.LOGGER.info("request mapping was unsuccessful");
             return request.getResponse();
