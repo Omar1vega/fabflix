@@ -112,4 +112,25 @@ public class CartPage {
         }
     }
 
+    @Path("clear")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response clearCart(String json) {
+        ServiceLogger.LOGGER.info("Received request to clear cart");
+        RequestWrapper<RetrieveCartRequestModel> request = RequestWrapper.map(json, RetrieveCartRequestModel.class);
+        if (request.mappedSuccessfully()) {
+            RetrieveCartRequestModel cartClearRequest = request.getRequestModel();
+
+            ResponseModel emailCheck = UserValidations.validateEmail(cartClearRequest.getEmail());
+            if (emailCheck != ResponseModel.VALID_REQUEST) {
+                return Response.status(Response.Status.BAD_REQUEST).entity(emailCheck).build();
+            }
+            return Response.status(Response.Status.OK).entity(CartRecords.clearCart(cartClearRequest)).build();
+        } else {
+            ServiceLogger.LOGGER.info("request mapping was unsuccessful");
+            return request.getResponse();
+        }
+    }
+
 }
