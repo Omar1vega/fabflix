@@ -15,7 +15,8 @@ public enum ResponseModel {
     SHOPPING_CART_INSERT_SUCCESSFUL(3100, "Shopping cart item inserted successfully."),
     SHOPPING_CART_UPDATE_SUCCESSFUL(3100, "Shopping cart item updated successfully."),
     SHOPPING_CART_DELETE_SUCCESSFUL(3120, "Shopping cart item deleted successfully."),
-    SHOPPING_CART_RETRIEVED_SUCCESSFUL(3130, "Shopping cart retrieved successfully"),
+    SHOPPING_CART_RETRIEVED_SUCCESSFUL(3130, "Shopping cart retrieved successfully."),
+    SHOPPING_CART_CLEAR_SUCCESSFUL(3140, "Shopping cart cleared successfully."),
     VALID_REQUEST(420, "Blaze it");
 
 
