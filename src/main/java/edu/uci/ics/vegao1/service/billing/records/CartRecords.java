@@ -3,13 +3,16 @@ package edu.uci.ics.vegao1.service.billing.records;
 import edu.uci.ics.vegao1.service.billing.BillingService;
 import edu.uci.ics.vegao1.service.billing.logger.ServiceLogger;
 import edu.uci.ics.vegao1.service.billing.models.CartInsertRequestModel;
+import edu.uci.ics.vegao1.service.billing.models.DeleteCartRequestModel;
 import edu.uci.ics.vegao1.service.billing.models.ResponseModel;
 
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class CartRecords {
     private static final String INSERT_CART_STATEMENT = "INSERT IGNORE INTO carts (quantity, email, movieId) VALUES (?, ?, ?)";
     private static final String UPDATE_CART_STATEMENT = "UPDATE carts SET quantity = ? WHERE email = ? AND movieId = ?";
+    private static final String DELETE_CART_STATEMENT = "DELETE FROM carts WHERE email = ? AND movieId = ?";
 
     public static ResponseModel insertCart(CartInsertRequestModel cartInsertRequest) {
         ServiceLogger.LOGGER.info("preparing statement to insert cart");
@@ -30,9 +33,30 @@ public class CartRecords {
             ServiceLogger.LOGGER.info("Cart updated successfully");
             return ResponseModel.SHOPPING_CART_UPDATE_SUCCESSFUL;
         } else {
+            ServiceLogger.LOGGER.info("Unable to update cart: ");
             return ResponseModel.ITEM_DOES_NOT_EXIST;
         }
+    }
 
+    public static ResponseModel deleteCart(DeleteCartRequestModel cartDeleteRequest) {
+        ServiceLogger.LOGGER.info("preparing statement to update cart");
+        try {
+            PreparedStatement statement = BillingService.getCon().prepareStatement(DELETE_CART_STATEMENT);
+            statement.setString(1, cartDeleteRequest.getEmail());
+            statement.setString(2, cartDeleteRequest.getMovieId());
+
+            ServiceLogger.LOGGER.info("Executing query: " + statement.toString());
+            if (statement.executeUpdate() > 0) {
+                ServiceLogger.LOGGER.info("Cart deleted successfully");
+                return ResponseModel.SHOPPING_CART_DELETE_SUCCESSFUL;
+            } else {
+                ServiceLogger.LOGGER.info("Unable to delete cart: ");
+                return ResponseModel.ITEM_DOES_NOT_EXIST;
+            }
+        } catch (SQLException e) {
+            ServiceLogger.LOGGER.info("Unable to execute query: " + e.getClass() + e.getCause().getLocalizedMessage());
+            return ResponseModel.ITEM_DOES_NOT_EXIST;
+        }
     }
 
     private static boolean exec(CartInsertRequestModel model, String query) {
@@ -44,7 +68,7 @@ public class CartRecords {
 
             ServiceLogger.LOGGER.info("Executing query: " + statement.toString());
             return statement.executeUpdate() > 0;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             ServiceLogger.LOGGER.info("Unable to execute query: " + e.getClass() + e.getCause().getLocalizedMessage());
             return false;
         }
