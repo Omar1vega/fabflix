@@ -13,6 +13,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.SQLException;
+import java.text.ParseException;
 
 @SuppressWarnings("Duplicates")
 @Path("creditcard")
@@ -22,7 +24,7 @@ public class CreditCardPage {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response insertCreditCard(String json) {
+    public Response insertCreditCard(String json) throws ParseException, SQLException {
         ServiceLogger.LOGGER.info("Received request to insert creditcard" + json);
 
         RequestWrapper<CreditCardInsertRequestModel> request = RequestWrapper.map(json, CreditCardInsertRequestModel.class);
@@ -45,7 +47,7 @@ public class CreditCardPage {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateCreditCard(String json) {
+    public Response updateCreditCard(String json) throws ParseException, SQLException {
         ServiceLogger.LOGGER.info("Received request to update creditcard" + json);
 
         RequestWrapper<CreditCardInsertRequestModel> request = RequestWrapper.map(json, CreditCardInsertRequestModel.class);
