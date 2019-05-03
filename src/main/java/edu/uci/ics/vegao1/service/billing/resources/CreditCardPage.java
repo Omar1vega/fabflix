@@ -40,4 +40,27 @@ public class CreditCardPage {
             return request.getResponse();
         }
     }
+
+    @Path("update")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateCreditCard(String json) {
+        ServiceLogger.LOGGER.info("Received request to update creditcard" + json);
+
+        RequestWrapper<CreditCardInsertRequestModel> request = RequestWrapper.map(json, CreditCardInsertRequestModel.class);
+        if (request.mappedSuccessfully()) {
+            CreditCardInsertRequestModel creditCardInsertRequest = request.getRequestModel();
+
+            ResponseModel creditCheck = CreditCardValidations.validateCreditCard(creditCardInsertRequest.getId(), creditCardInsertRequest.getExpiration());
+            if (creditCheck != ResponseModel.VALID_REQUEST) {
+                return Response.status(Response.Status.BAD_REQUEST).entity(creditCheck).build();
+            }
+
+            return Response.status(Response.Status.OK).entity(CreditCardRecords.updateCardInfo(creditCardInsertRequest)).build();
+        } else {
+            ServiceLogger.LOGGER.info("request mapping was unsuccessful");
+            return request.getResponse();
+        }
+    }
 }
