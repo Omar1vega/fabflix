@@ -12,29 +12,48 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class CreditCardRecords {
-    private static final String INSERT_CART_STATEMENT = "INSERT IGNORE INTO creditcards (id, firstName, lastName, expiration) VALUES (? ,?, ?, ?)";
+    private static final String INSERT_CART_STATEMENT = "INSERT IGNORE INTO creditcards (firstName, lastName, expiration, id) VALUES (? ,?, ?, ?)";
+    private static final String UPDATE_CART_STATEMENT = "UPDATE creditcards SET firstName = ?, lastName = ?, expiration = ? WHERE id= ?";
+
 
     public static ResponseModel insertCard(CreditCardInsertRequestModel cartInsertRequest) {
         ServiceLogger.LOGGER.info("preparing statement to insert creditcard");
 
-        try {
-            PreparedStatement statement = BillingService.getCon().prepareStatement(INSERT_CART_STATEMENT);
-            statement.setString(1, cartInsertRequest.getId());
-            statement.setString(2, cartInsertRequest.getFirstName());
-            statement.setString(3, cartInsertRequest.getLastName());
+        if (exec(cartInsertRequest, INSERT_CART_STATEMENT)) {
+            return ResponseModel.CREDIT_CARD_INSERT_SUCCESSFUL;
+        }
+        return ResponseModel.CREDIT_CARD_DUPLICATE_INSERTION;
 
-            Date expirationDate = new Date(new SimpleDateFormat("yyyy-MM-dd").parse(cartInsertRequest.getExpiration()).getTime());
-            statement.setDate(4, expirationDate);
+    }
+
+    public static ResponseModel updateCardInfo(CreditCardInsertRequestModel creditCardUpdateRequest) {
+        if (exec(creditCardUpdateRequest, UPDATE_CART_STATEMENT)) {
+            return ResponseModel.CREDIT_CARD_UPDATE_SUCCESSFUL;
+        }
+        return ResponseModel.CREDIT_CARD_DOES_NOT_EXIST;
+
+
+    }
+
+    private static boolean exec(CreditCardInsertRequestModel model, String query) {
+        try {
+            PreparedStatement statement = BillingService.getCon().prepareStatement(query);
+            statement.setString(4, model.getId());
+            statement.setString(1, model.getFirstName());
+            statement.setString(2, model.getLastName());
+
+            Date expirationDate = new Date(new SimpleDateFormat("yyyy-MM-dd").parse(model.getExpiration()).getTime());
+            statement.setDate(3, expirationDate);
 
             ServiceLogger.LOGGER.info("Executing query: " + statement.toString());
             if (statement.executeUpdate() > 0) {
-                return ResponseModel.CREDIT_CARD_INSERT_SUCCESSFUL;
+                return true;
             }
         } catch (SQLException e) {
             ServiceLogger.LOGGER.info("Unable to execute query: " + e.getClass() + e.getCause().getLocalizedMessage());
         } catch (ParseException ignored) {//already handled
         }
-        return ResponseModel.CREDIT_CARD_DUPLICATE_INSERTION;
+        return false;
     }
 
 }
