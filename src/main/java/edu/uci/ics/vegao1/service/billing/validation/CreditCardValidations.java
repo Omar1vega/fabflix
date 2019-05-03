@@ -23,7 +23,7 @@ public class CreditCardValidations {
         if (!CCID_PATTERN.matcher(ccid.trim()).matches()) {
             return ResponseModel.CREDIT_CARD_INVALID_VALUE;
         }
-        if (!DATE_PATTERN.matcher(expiration.trim()).matches()) {
+        if (DATE_PATTERN.matcher(expiration.trim()).matches()) {
             try {
                 Date expirationDate = DATE_FORMAT.parse(expiration);
                 Date today = new Date();
