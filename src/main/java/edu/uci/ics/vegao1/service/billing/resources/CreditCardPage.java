@@ -3,6 +3,7 @@ package edu.uci.ics.vegao1.service.billing.resources;
 import edu.uci.ics.vegao1.service.billing.logger.ServiceLogger;
 import edu.uci.ics.vegao1.service.billing.models.RequestWrapper;
 import edu.uci.ics.vegao1.service.billing.models.ResponseModel;
+import edu.uci.ics.vegao1.service.billing.models.creditcard.CreditCardDeleteRequestModel;
 import edu.uci.ics.vegao1.service.billing.models.creditcard.CreditCardInsertRequestModel;
 import edu.uci.ics.vegao1.service.billing.records.creditcard.CreditCardRecords;
 import edu.uci.ics.vegao1.service.billing.validation.CreditCardValidations;
@@ -60,6 +61,28 @@ public class CreditCardPage {
             }
 
             return Response.status(Response.Status.OK).entity(CreditCardRecords.updateCardInfo(creditCardInsertRequest)).build();
+        } else {
+            ServiceLogger.LOGGER.info("request mapping was unsuccessful");
+            return request.getResponse();
+        }
+    }
+
+    @Path("delete")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteCreditCard(String json) throws SQLException {
+        ServiceLogger.LOGGER.info("Received request to update creditcard" + json);
+
+        RequestWrapper<CreditCardDeleteRequestModel> request = RequestWrapper.map(json, CreditCardDeleteRequestModel.class);
+        if (request.mappedSuccessfully()) {
+            CreditCardDeleteRequestModel creditCardInsertRequest = request.getRequestModel();
+
+            ResponseModel creditCheck = CreditCardValidations.validateId(creditCardInsertRequest.getId());
+            if (creditCheck != ResponseModel.VALID_REQUEST) {
+                return Response.status(Response.Status.BAD_REQUEST).entity(creditCheck).build();
+            }
+            return Response.status(Response.Status.OK).entity(CreditCardRecords.deleteCreditCard(creditCardInsertRequest)).build();
         } else {
             ServiceLogger.LOGGER.info("request mapping was unsuccessful");
             return request.getResponse();
