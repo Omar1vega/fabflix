@@ -88,4 +88,26 @@ public class CreditCardPage {
             return request.getResponse();
         }
     }
+
+    @Path("retrieve")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveCreditCard(String json) throws SQLException {
+        ServiceLogger.LOGGER.info("Received request to retrieve creditcard" + json);
+
+        RequestWrapper<CreditCardDeleteRequestModel> request = RequestWrapper.map(json, CreditCardDeleteRequestModel.class);
+        if (request.mappedSuccessfully()) {
+            CreditCardDeleteRequestModel creditCardRetrieveRequest = request.getRequestModel();
+
+            ResponseModel creditCheck = CreditCardValidations.validateId(creditCardRetrieveRequest.getId());
+            if (creditCheck != ResponseModel.VALID_REQUEST) {
+                return Response.status(Response.Status.BAD_REQUEST).entity(creditCheck).build();
+            }
+            return Response.status(Response.Status.OK).entity(CreditCardRecords.retrieveCreditCard(creditCardRetrieveRequest)).build();
+        } else {
+            ServiceLogger.LOGGER.info("request mapping was unsuccessful");
+            return request.getResponse();
+        }
+    }
 }
