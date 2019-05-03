@@ -1,10 +1,12 @@
 package edu.uci.ics.vegao1.service.billing.models.cart;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.uci.ics.vegao1.service.billing.models.ResponseModel;
 import edu.uci.ics.vegao1.service.billing.records.cart.Cart;
 
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CartRetrieveResponseModel {
     private int resultCode;
     private String message;
