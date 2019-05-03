@@ -16,13 +16,15 @@ public class CreditCardValidations {
 
 
     public static ResponseModel validateCreditCard(String ccid, String expiration) {
-        if (ccid.trim().length() != EXPECTED_CCID_LENGTH) {
-            return ResponseModel.CREDIT_CARD_INVALID_LENGTH;
+        ResponseModel idCheck = validateId(ccid);
+        if (idCheck == ResponseModel.VALID_REQUEST) {
+            return validateExpiration(expiration);
+        } else {
+            return idCheck;
         }
+    }
 
-        if (!CCID_PATTERN.matcher(ccid.trim()).matches()) {
-            return ResponseModel.CREDIT_CARD_INVALID_VALUE;
-        }
+    private static ResponseModel validateExpiration(String expiration) {
         if (DATE_PATTERN.matcher(expiration.trim()).matches()) {
             try {
                 Date expirationDate = DATE_FORMAT.parse(expiration);
@@ -38,6 +40,16 @@ public class CreditCardValidations {
             return ResponseModel.CREDIT_CARD_EXPIRATION_INVALID_VALUE;
         }
 
+        return ResponseModel.VALID_REQUEST;
+    }
+
+    public static ResponseModel validateId(String ccid) {
+        if (ccid.trim().length() != EXPECTED_CCID_LENGTH) {
+            return ResponseModel.CREDIT_CARD_INVALID_LENGTH;
+        }
+        if (!CCID_PATTERN.matcher(ccid.trim()).matches()) {
+            return ResponseModel.CREDIT_CARD_INVALID_VALUE;
+        }
         return ResponseModel.VALID_REQUEST;
     }
 }
