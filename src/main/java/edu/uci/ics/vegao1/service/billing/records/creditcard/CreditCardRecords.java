@@ -4,9 +4,11 @@ import edu.uci.ics.vegao1.service.billing.logger.ServiceLogger;
 import edu.uci.ics.vegao1.service.billing.models.ResponseModel;
 import edu.uci.ics.vegao1.service.billing.models.creditcard.CreditCardDeleteRequestModel;
 import edu.uci.ics.vegao1.service.billing.models.creditcard.CreditCardInsertRequestModel;
+import edu.uci.ics.vegao1.service.billing.models.creditcard.CreditCardRetrieveResponseModel;
 import edu.uci.ics.vegao1.service.billing.util.Db;
 
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,6 +17,7 @@ public class CreditCardRecords {
     private static final String INSERT_CREDIT_CARD_STATEMENT = "INSERT IGNORE INTO creditcards (firstName, lastName, expiration, id) VALUES (? ,?, ?, ?)";
     private static final String UPDATE_CREDIT_CARD_STATEMENT = "UPDATE creditcards SET firstName = ?, lastName = ?, expiration = ? WHERE id= ?";
     private static final String DELETE_CREDIT_CARD_STATEMENT = "DELETE FROM creditcards WHERE id = ?";
+    private static final String RETRIEVE_CREDIT_CARD_STATEMENT = "SELECT * FROM creditcards WHERE id = ?";
 
 
     public static ResponseModel insertCard(CreditCardInsertRequestModel cartInsertRequest) throws ParseException, SQLException {
@@ -42,5 +45,15 @@ public class CreditCardRecords {
             return ResponseModel.CREDIT_CARD_DELETE_SUCCESSFUL;
         }
         return ResponseModel.CREDIT_CARD_DOES_NOT_EXIST;
+    }
+
+    public static CreditCardRetrieveResponseModel retrieveCreditCard(CreditCardDeleteRequestModel creditCardRetrieveRequest) throws SQLException {
+        ServiceLogger.LOGGER.info("preparing statement to retrieve credit card");
+        ResultSet resultSet = Db.executeStatementForResult(RETRIEVE_CREDIT_CARD_STATEMENT, creditCardRetrieveRequest.getId());
+        if (resultSet.next()) {
+            CreditCard creditCard = CreditCard.fromResultSet(resultSet);
+            return new CreditCardRetrieveResponseModel(ResponseModel.CREDIT_CARD_RETRIEVE_SUCCESSFUL, creditCard);
+        }
+        return CreditCardRetrieveResponseModel.fromResponseModel(ResponseModel.CREDIT_CARD_DOES_NOT_EXIST);
     }
 }
