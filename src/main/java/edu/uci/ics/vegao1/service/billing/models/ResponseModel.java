@@ -17,6 +17,9 @@ public enum ResponseModel {
     CREDIT_CARD_EXPIRATION_INVALID_VALUE(323, "expiration has invalid value."),
     CREDIT_CARD_DOES_NOT_EXIST(324, "Credit card does not exist."),
     CREDIT_CARD_DUPLICATE_INSERTION(325, "Duplicate insertion."),
+    CREDIT_CARD_ID_NOT_FOUND(331, "Credit card ID not found."),
+    CUSTOMER_DOES_NOT_EXIST(332, "Customer does not exist."),
+    CUSTOMER_DUPLICATE_INSERTION(333, "Duplicate insertion."),
     SHOPPING_CART_INSERT_SUCCESSFUL(3100, "Shopping cart item inserted successfully."),
     SHOPPING_CART_UPDATE_SUCCESSFUL(3100, "Shopping cart item updated successfully."),
     SHOPPING_CART_DELETE_SUCCESSFUL(3120, "Shopping cart item deleted successfully."),
@@ -26,6 +29,10 @@ public enum ResponseModel {
     CREDIT_CARD_UPDATE_SUCCESSFUL(3210, "Credit card updated successfully."),
     CREDIT_CARD_DELETE_SUCCESSFUL(3220, "Credit card deleted successfully."),
     CREDIT_CARD_RETRIEVE_SUCCESSFUL(3230, "Credit card retrieved successfully."),
+    CUSTOMER_UPDATE_SUCCESSFUL(3310, "Customer updated successfully."),
+    CUSTOMER_RETRIEVE_SUCCESSFUL(3320, "Customer retrieved successfully."),
+    CUSTOMER_INSERT_SUCCESSFUL(3300, "Customer inserted successfully."),
+
 
     VALID_REQUEST(420, "Blaze it");
 
