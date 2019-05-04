@@ -1,10 +1,12 @@
 package edu.uci.ics.vegao1.service.billing.models.order;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.uci.ics.vegao1.service.billing.models.ResponseModel;
 import edu.uci.ics.vegao1.service.billing.records.sales.Order;
 
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderResponseModel {
     private int resultCode;
     private String message;
