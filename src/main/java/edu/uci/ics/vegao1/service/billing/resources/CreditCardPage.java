@@ -34,7 +34,7 @@ public class CreditCardPage {
 
             ResponseModel creditCheck = CreditCardValidations.validateCreditCard(creditCardInsertRequest.getId(), creditCardInsertRequest.getExpiration());
             if (creditCheck != ResponseModel.VALID_REQUEST) {
-                return Response.status(Response.Status.BAD_REQUEST).entity(creditCheck).build();
+                return Response.status(Response.Status.OK).entity(creditCheck).build();
             }
 
             return Response.status(Response.Status.OK).entity(CreditCardRecords.insertCard(creditCardInsertRequest)).build();
@@ -57,7 +57,7 @@ public class CreditCardPage {
 
             ResponseModel creditCheck = CreditCardValidations.validateCreditCard(creditCardInsertRequest.getId(), creditCardInsertRequest.getExpiration());
             if (creditCheck != ResponseModel.VALID_REQUEST) {
-                return Response.status(Response.Status.BAD_REQUEST).entity(creditCheck).build();
+                return Response.status(Response.Status.OK).entity(creditCheck).build();
             }
 
             return Response.status(Response.Status.OK).entity(CreditCardRecords.updateCardInfo(creditCardInsertRequest)).build();
@@ -80,7 +80,7 @@ public class CreditCardPage {
 
             ResponseModel creditCheck = CreditCardValidations.validateId(creditCardInsertRequest.getId());
             if (creditCheck != ResponseModel.VALID_REQUEST) {
-                return Response.status(Response.Status.BAD_REQUEST).entity(creditCheck).build();
+                return Response.status(Response.Status.OK).entity(creditCheck).build();
             }
             return Response.status(Response.Status.OK).entity(CreditCardRecords.deleteCreditCard(creditCardInsertRequest)).build();
         } else {
@@ -102,7 +102,7 @@ public class CreditCardPage {
 
             ResponseModel creditCheck = CreditCardValidations.validateId(creditCardRetrieveRequest.getId());
             if (creditCheck != ResponseModel.VALID_REQUEST) {
-                return Response.status(Response.Status.BAD_REQUEST).entity(creditCheck).build();
+                return Response.status(Response.Status.OK).entity(creditCheck).build();
             }
             return Response.status(Response.Status.OK).entity(CreditCardRecords.retrieveCreditCard(creditCardRetrieveRequest)).build();
         } else {

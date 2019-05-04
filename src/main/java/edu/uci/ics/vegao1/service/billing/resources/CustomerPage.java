@@ -35,7 +35,7 @@ public class CustomerPage {
 
             ResponseModel creditCheck = CreditCardValidations.validateId(customerModel.getCcId());
             if (creditCheck != ResponseModel.VALID_REQUEST) {
-                return Response.status(Response.Status.BAD_REQUEST).entity(creditCheck).build();
+                return Response.status(Response.Status.OK).entity(creditCheck).build();
             }
 
             boolean creditCardExists = CreditCardRecords.retrieveCreditCard(new CreditCardDeleteRequestModel(customerModel.getCcId())).getResultCode() == ResponseModel.CREDIT_CARD_RETRIEVE_SUCCESSFUL.getResultCode();
@@ -63,7 +63,7 @@ public class CustomerPage {
 
             ResponseModel creditCheck = CreditCardValidations.validateId(customer.getCcId());
             if (creditCheck != ResponseModel.VALID_REQUEST) {
-                return Response.status(Response.Status.BAD_REQUEST).entity(creditCheck).build();
+                return Response.status(Response.Status.OK).entity(creditCheck).build();
             }
             boolean creditCardExists = CreditCardRecords.retrieveCreditCard(new CreditCardDeleteRequestModel(customer.getCcId())).getResultCode() == ResponseModel.CREDIT_CARD_RETRIEVE_SUCCESSFUL.getResultCode();
             if (!creditCardExists) {
