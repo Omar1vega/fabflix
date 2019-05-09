@@ -36,7 +36,7 @@ public class OrderPage {
                 return Response.status(Response.Status.OK).entity(ResponseModel.CUSTOMER_DOES_NOT_EXIST).build();
             }
 
-            return Response.status(Response.Status.OK).entity(SalesRecords.placeOrder(orderPlaceRequest)).build();
+            return Response.status(Response.Status.OK).entity(SalesRecords.pay()).build();
         } else {
             ServiceLogger.LOGGER.info("request mapping was unsuccessful");
             return request.getResponse();
