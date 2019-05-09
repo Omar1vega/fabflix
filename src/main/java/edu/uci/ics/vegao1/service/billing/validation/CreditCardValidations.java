@@ -9,7 +9,8 @@ import java.util.Date;
 import java.util.regex.Pattern;
 
 public class CreditCardValidations {
-    private static final int EXPECTED_CCID_LENGTH = 19;
+    private static final int CCID_MAXIMUM_LENGTH = 20;
+    private static final int CCID_MINIMUM_LENGTH = 16;
     private static final Pattern CCID_PATTERN = Pattern.compile("\\d+");
     private static final Pattern DATE_PATTERN = Pattern.compile("([0-9]{4})-([0-9]{2})-([0-9]{2})");
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
@@ -44,7 +45,8 @@ public class CreditCardValidations {
     }
 
     public static ResponseModel validateId(String ccid) {
-        if (ccid.trim().length() != EXPECTED_CCID_LENGTH) {
+        int ccidLength = ccid.trim().length();
+        if (ccidLength > CCID_MAXIMUM_LENGTH || ccidLength < CCID_MINIMUM_LENGTH) {
             return ResponseModel.CREDIT_CARD_INVALID_LENGTH;
         }
         if (!CCID_PATTERN.matcher(ccid.trim()).matches()) {
