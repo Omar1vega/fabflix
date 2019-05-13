@@ -35,7 +35,7 @@ public class OrderPage {
             if (!customerExists) {
                 return Response.status(Response.Status.OK).entity(ResponseModel.CUSTOMER_DOES_NOT_EXIST).build();
             }
-            String returnUrl = uriInfo.getBaseUri().resolve("complete").toString();
+            String returnUrl = uriInfo.getBaseUri().resolve("order").resolve("complete").toString();
             return Response.status(Response.Status.OK).entity(SalesRecords.placeOrder(orderPlaceRequest, returnUrl)).build();
         } else {
             ServiceLogger.LOGGER.info("request mapping was unsuccessful");
