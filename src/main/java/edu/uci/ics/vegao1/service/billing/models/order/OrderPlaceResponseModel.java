@@ -1,7 +1,9 @@
 package edu.uci.ics.vegao1.service.billing.models.order;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.uci.ics.vegao1.service.billing.models.ResponseModel;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderPlaceResponseModel {
     private int resultCode;
     private String message;
