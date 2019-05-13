@@ -4,14 +4,12 @@ import edu.uci.ics.vegao1.service.billing.logger.ServiceLogger;
 import edu.uci.ics.vegao1.service.billing.models.RequestWrapper;
 import edu.uci.ics.vegao1.service.billing.models.ResponseModel;
 import edu.uci.ics.vegao1.service.billing.models.customer.CustomerRetrieveRequestModel;
+import edu.uci.ics.vegao1.service.billing.models.order.OrderCompleteModel;
 import edu.uci.ics.vegao1.service.billing.models.order.OrderRequestModel;
 import edu.uci.ics.vegao1.service.billing.records.customer.CustomerRecords;
 import edu.uci.ics.vegao1.service.billing.records.sales.SalesRecords;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -62,5 +60,14 @@ public class OrderPage {
             ServiceLogger.LOGGER.info("request mapping was unsuccessful");
             return request.getResponse();
         }
+    }
+
+    @Path("complete")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response completeOrder(@BeanParam OrderCompleteModel orderCompleteModel) {
+        ServiceLogger.LOGGER.info("Received request to complete order" + orderCompleteModel);
+
+        return Response.status(Response.Status.OK).entity(SalesRecords.completeOrder(orderCompleteModel)).build();
     }
 }

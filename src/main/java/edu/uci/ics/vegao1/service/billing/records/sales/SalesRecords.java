@@ -4,6 +4,7 @@ import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import edu.uci.ics.vegao1.service.billing.logger.ServiceLogger;
 import edu.uci.ics.vegao1.service.billing.models.ResponseModel;
+import edu.uci.ics.vegao1.service.billing.models.order.OrderCompleteModel;
 import edu.uci.ics.vegao1.service.billing.models.order.OrderPlaceResponseModel;
 import edu.uci.ics.vegao1.service.billing.models.order.OrderRequestModel;
 import edu.uci.ics.vegao1.service.billing.models.order.OrderResponseModel;
@@ -27,6 +28,26 @@ public class SalesRecords {
             "FROM carts\n" +
             "WHERE email = ?";
 
+    private static final String GET_CART_TOTALS_STATEMENT = "" +
+            "SELECT id ,(quantity * (unit_price * discount)) AS total\n" +
+            "FROM carts,\n" +
+            "     movie_prices\n" +
+            "WHERE email = ?\n" +
+            "  AND carts.movieId = movie_prices.movieId\n" +
+            "GROUP BY carts.movieId";
+
+    private static final String INSERT_SALES_TRANSCATION_STATEMENT = "CALL insert_sales_transactions(?, ?)";
+
+    private static final String UPDATE_TRANSACTIONS_STATEMENT = "" +
+            "UPDATE transactions\n" +
+            "SET transactionId = ?\n" +
+            "WHERE token = ?";
+
+    private static final String GET_CARTS_STATEMENT = "" +
+            "SELECT email, movieId, quantity, CURDATE() AS saleDate\n" +
+            "FROM carts\n" +
+            "WHERE email = ?";
+
     private static final String CALCULATE_TOTAL_STATEMENT = "" +
             "SELECT sum(total) AS total\n" +
             "FROM (SELECT (quantity * (unit_price * discount)) AS total\n" +
@@ -45,15 +66,17 @@ public class SalesRecords {
     public static OrderPlaceResponseModel placeOrder(OrderRequestModel order, String returnUrl) throws SQLException {
         ServiceLogger.LOGGER.info("preparing statement to place order");
         String cost = getCost(order.getEmail());
-        if (cost != null) {
-            return sendToPaypal(cost, returnUrl);
-        }
 
-//        boolean orderPlaced = Db.executeStatement(PLACE_ORDER_STATEMENT, order.getEmail());
-//        if (orderPlaced) {
-//            Db.executeStatement(DELETE_CART_STATEMENT, order.getEmail());
-//            return OrderPlaceResponseModel.fromResponseModel(ResponseModel.ORDER_PLACE_SUCCESSFUL);
-//        }
+        ServiceLogger.LOGGER.info("Cost : " + cost);
+        if (cost != null) {
+            OrderPlaceResponseModel response = sendToPaypal(cost, returnUrl);
+
+            List<Cart> carts = getCarts(order.getEmail());
+            for (Cart cart : carts) {
+                Db.executeStatement(INSERT_SALES_TRANSCATION_STATEMENT, cart.getId(), response.getToken());
+            }
+            return response;
+        }
         return OrderPlaceResponseModel.fromResponseModel(ResponseModel.SHOPPING_CART_NOT_FOUND);
     }
 
@@ -110,5 +133,51 @@ public class SalesRecords {
             return format.format(resultSet.getFloat("total"));
         }
         return null;
+    }
+
+    public static ResponseModel completeOrder(OrderCompleteModel orderCompleteModel) {
+        Payment payment = new Payment();
+        payment.setId(orderCompleteModel.getPaymentId());
+        PaymentExecution paymentExecution = new PaymentExecution();
+        paymentExecution.setPayerId(orderCompleteModel.getPayerID());
+
+
+        try {
+            APIContext apiContext = new APIContext(PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, "sandbox");
+            Payment createdPayment = payment.execute(apiContext, paymentExecution);
+            String transactionId = createdPayment.getTransactions().get(0).getRelatedResources().get(0).getSale().getId();
+            String token = orderCompleteModel.getToken();
+
+            boolean tokenFound = Db.executeStatement(UPDATE_TRANSACTIONS_STATEMENT, transactionId, token);
+            if (tokenFound) {
+                return ResponseModel.ORDER_PAYMENT_COMPLETED;
+            } else {
+                return ResponseModel.ORDER_TOKEN_NOT_FOUND;
+            }
+
+        } catch (Exception e) {
+            ServiceLogger.LOGGER.info("error payment with paypal");
+            ServiceLogger.LOGGER.info(e.getClass().getCanonicalName() + e.getLocalizedMessage());
+        }
+
+        return ResponseModel.ORDER_PAYMENT_CANNOT_BE_COMPLETED;
+    }
+
+    private static List<Sale> callP(String user) throws SQLException {
+        ResultSet resultSet = Db.executeStatementForResult(GET_CARTS_STATEMENT, user);
+        List<Sale> sales = new ArrayList<>();
+        while (resultSet.next()) {
+            sales.add(Sale.fromResultSet(resultSet));
+        }
+        return sales;
+    }
+
+    private static List<Cart> getCarts(String email) throws SQLException {
+        ResultSet resultSet = Db.executeStatementForResult(GET_CART_TOTALS_STATEMENT, email);
+        List<Cart> carts = new ArrayList<>();
+        while (resultSet.next()) {
+            carts.add(Cart.fromResultSet(resultSet));
+        }
+        return carts;
     }
 }

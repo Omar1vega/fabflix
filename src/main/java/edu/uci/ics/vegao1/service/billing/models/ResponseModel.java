@@ -36,7 +36,9 @@ public enum ResponseModel {
     CUSTOMER_INSERT_SUCCESSFUL(3300, "Customer inserted successfully."),
     ORDER_PLACE_SUCCESSFUL(3400, "Order placed successfully."),
     ORDER_RETRIEVE_SUCCESSFUL(3410, "Orders retrieved successfully."),
-
+    ORDER_PAYMENT_COMPLETED(3420, "Payment is completed successfully."),
+    ORDER_TOKEN_NOT_FOUND(3421, "Token not found."),
+    ORDER_PAYMENT_CANNOT_BE_COMPLETED(3422, "Payment can not be completed."),
     VALID_REQUEST(420, "Blaze it");
 
 
