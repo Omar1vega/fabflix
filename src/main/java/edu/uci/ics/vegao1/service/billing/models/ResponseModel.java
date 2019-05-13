@@ -21,6 +21,7 @@ public enum ResponseModel {
     CUSTOMER_DOES_NOT_EXIST(332, "Customer does not exist."),
     CUSTOMER_DUPLICATE_INSERTION(333, "Duplicate insertion."),
     SHOPPING_CART_NOT_FOUND(341, "Shopping cart for this customer not found."),
+    ORDER_CREATE_PAYMENT_FAILED(342, "Create payment failed."),
     SHOPPING_CART_INSERT_SUCCESSFUL(3100, "Shopping cart item inserted successfully."),
     SHOPPING_CART_UPDATE_SUCCESSFUL(3110, "Shopping cart item updated successfully."),
     SHOPPING_CART_DELETE_SUCCESSFUL(3120, "Shopping cart item deleted successfully."),
