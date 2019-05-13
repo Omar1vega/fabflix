@@ -12,8 +12,10 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.sql.SQLException;
 
 @SuppressWarnings("Duplicates")
@@ -24,7 +26,7 @@ public class OrderPage {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response placeOrder(String json) throws SQLException {
+    public Response placeOrder(@Context UriInfo uriInfo, String json) throws SQLException {
         ServiceLogger.LOGGER.info("Received request to place order" + json);
 
         RequestWrapper<OrderRequestModel> request = RequestWrapper.map(json, OrderRequestModel.class);
@@ -35,8 +37,8 @@ public class OrderPage {
             if (!customerExists) {
                 return Response.status(Response.Status.OK).entity(ResponseModel.CUSTOMER_DOES_NOT_EXIST).build();
             }
-
-            return Response.status(Response.Status.OK).entity(SalesRecords.pay()).build();
+            String returnUrl = uriInfo.getBaseUri().resolve("complete").toString();
+            return Response.status(Response.Status.OK).entity(SalesRecords.placeOrder(orderPlaceRequest, returnUrl)).build();
         } else {
             ServiceLogger.LOGGER.info("request mapping was unsuccessful");
             return request.getResponse();
