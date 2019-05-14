@@ -8,12 +8,16 @@ public class Order {
     private String movieId;
     private int quantity;
     private String saleDate;
+    private float unit_price;
+    private float discount;
 
-    private Order(String email, String movieId, int quantity, String saleDate) {
+    private Order(String email, String movieId, int quantity, String saleDate, float unit_price, float discount) {
         this.email = email;
         this.movieId = movieId;
         this.quantity = quantity;
         this.saleDate = saleDate;
+        this.unit_price = unit_price;
+        this.discount = discount;
     }
 
     static Order fromResultSet(ResultSet resultSet) throws SQLException {
@@ -21,10 +25,31 @@ public class Order {
         String movieId = resultSet.getString("movieId");
         int quantity = resultSet.getInt("quantity");
         String saleDate = resultSet.getString("saleDate");
+        float unit_price = resultSet.getFloat("unit_price");
+        float discount = resultSet.getFloat("discount");
 
-        return new Order(email, movieId, quantity, saleDate);
+        return new Order(email, movieId, quantity, saleDate, unit_price, discount);
     }
 
+    @SuppressWarnings("unused") //Used by Jackson
+    public float getUnit_price() {
+        return unit_price;
+    }
+
+    @SuppressWarnings("unused") //Used by Jackson
+    public void setUnit_price(float unit_price) {
+        this.unit_price = unit_price;
+    }
+
+    @SuppressWarnings("unused") //Used by Jackson
+    public float getDiscount() {
+        return discount;
+    }
+
+    @SuppressWarnings("unused") //Used by Jackson
+    public void setDiscount(float discount) {
+        this.discount = discount;
+    }
 
     @SuppressWarnings("unused") //Used by Jackson
     public String getEmail() {
@@ -73,6 +98,8 @@ public class Order {
                 ", movieId='" + movieId + '\'' +
                 ", quantity=" + quantity +
                 ", saleDate='" + saleDate + '\'' +
+                ", unit_price=" + unit_price +
+                ", discount=" + discount +
                 '}';
     }
 }

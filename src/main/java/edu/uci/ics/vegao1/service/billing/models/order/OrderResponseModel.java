@@ -3,6 +3,7 @@ package edu.uci.ics.vegao1.service.billing.models.order;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.uci.ics.vegao1.service.billing.models.ResponseModel;
 import edu.uci.ics.vegao1.service.billing.records.sales.Order;
+import edu.uci.ics.vegao1.service.billing.records.sales.Transaction;
 
 import java.util.List;
 
@@ -11,21 +12,24 @@ public class OrderResponseModel {
     private int resultCode;
     private String message;
     private List<Order> items;
+    private List<Transaction> transactions;
 
-    private OrderResponseModel(int resultCode, String message, List<Order> items) {
+    private OrderResponseModel(int resultCode, String message, List<Order> items, List<Transaction> transactions) {
         this.resultCode = resultCode;
         this.message = message;
         this.items = items;
+        this.transactions = transactions;
     }
 
-    public OrderResponseModel(ResponseModel responseModel, List<Order> items) {
+    public OrderResponseModel(ResponseModel responseModel, List<Order> items, List<Transaction> transactions) {
         this.resultCode = responseModel.getResultCode();
         this.message = responseModel.getMessage();
         this.items = items;
+        this.transactions = transactions;
     }
 
     public static OrderResponseModel fromResponseModel(ResponseModel responseModel) {
-        return new OrderResponseModel(responseModel.getResultCode(), responseModel.getMessage(), null);
+        return new OrderResponseModel(responseModel.getResultCode(), responseModel.getMessage(), null, null);
     }
 
 
@@ -57,5 +61,15 @@ public class OrderResponseModel {
     @SuppressWarnings("unused") //Used by Jackson
     public void setItems(List<Order> items) {
         this.items = items;
+    }
+
+    @SuppressWarnings("unused") //Used by Jackson
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    @SuppressWarnings("unused") //Used by Jackson
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 }

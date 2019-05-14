@@ -58,7 +58,20 @@ public class SalesRecords {
             "      GROUP BY carts.movieId) AS totals";
 
     private static final String DELETE_CART_STATEMENT = "DELETE FROM carts WHERE email=?";
-    private static final String RETRIEVE_ORDER_STATEMENT = "SELECT email,movieId,quantity,saleDate FROM sales WHERE email = ?";
+    private static final String RETRIEVE_ORDER_STATEMENT = "" +
+            "SELECT email, sales.movieId, quantity, saleDate, unit_price, discount\n" +
+            "FROM sales,\n" +
+            "     movie_prices\n" +
+            "WHERE email = ? \n" +
+            "  AND sales.movieId = movie_prices.movieId";
+
+    private static final String RETRIEVE_TRANSACTIONS_STATEMENT = "" +
+            "SELECT transactionId\n" +
+            "FROM transactions,\n" +
+            "     sales\n" +
+            "WHERE email = ? \n" +
+            "  AND sales.id = transactions.sId\n" +
+            "GROUP BY transactionId";
     private static final String PAYPAL_CLIENT_ID = "AcYDHJDy-FDaHXrrjwYCzVXn04iMoI-KV1WHEP5BYYqptrE37liYPhoOzMJBeEIfS8M3Tz9JjNYVVO_o";
     private static final String PAYPAL_CLIENT_SECRET = "EJo76NofLVn96SIBz0B258OOGUwNAsQMQ1Pxt7HUDJiSXH1Pjda4ROEkt8SrDLqoVlW_krl28Ar7lG7W";
 
@@ -90,8 +103,31 @@ public class SalesRecords {
             ServiceLogger.LOGGER.info("Found order: " + order);
             items.add(order);
         }
+
+        resultSet = Db.executeStatementForResult(RETRIEVE_TRANSACTIONS_STATEMENT, orderRetrieveRequest.getEmail());
+        List<String> transactionIds = new ArrayList<>();
+        while (resultSet.next()) {
+            String transactionId = resultSet.getString("transactionId");
+            ServiceLogger.LOGGER.info("Found transactionId: " + transactionId);
+            transactionIds.add(transactionId);
+        }
+
+        List<Transaction> transactions = new ArrayList<>();
+        for (String transactionId : transactionIds) {
+            try {
+                APIContext apiContext = new APIContext(PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, "sandbox");
+                com.paypal.api.payments.Sale sale = com.paypal.api.payments.Sale.get(apiContext, transactionId);
+                Transaction transaction = new Transaction(transactionId, sale.getState(), new GhettoAmount(sale.getAmount().getTotal(), sale.getAmount().getCurrency()), sale.getTransactionFee(), sale.getCreateTime(), sale.getUpdateTime());
+                transactions.add(transaction);
+
+            } catch (Exception e) {
+                ServiceLogger.LOGGER.info("error payment with paypal");
+                ServiceLogger.LOGGER.info(e.getClass().getCanonicalName() + e.getLocalizedMessage());
+            }
+        }
+
         if (!items.isEmpty()) {
-            return new OrderResponseModel(ResponseModel.ORDER_RETRIEVE_SUCCESSFUL, items);
+            return new OrderResponseModel(ResponseModel.ORDER_RETRIEVE_SUCCESSFUL, items, transactions);
         }
         return OrderResponseModel.fromResponseModel(ResponseModel.CUSTOMER_DOES_NOT_EXIST);
     }
@@ -101,7 +137,7 @@ public class SalesRecords {
         Amount amount = new Amount().setCurrency("USD").setTotal(cost);
         ServiceLogger.LOGGER.info("Amount: " + amount.getTotal());
 
-        Transaction transaction = new Transaction();
+        com.paypal.api.payments.Transaction transaction = new com.paypal.api.payments.Transaction();
         transaction.setAmount(amount);
 
         Payer payer = new Payer().setPaymentMethod("paypal");
