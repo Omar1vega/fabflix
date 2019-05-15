@@ -1,23 +1,21 @@
 package edu.uci.ics.vegao1.service.api_gateway.configs;
 
-import edu.uci.ics.vegao1.service.api_gateway.logger.ServiceLogger;
 import edu.uci.ics.vegao1.service.api_gateway.GatewayService;
+import edu.uci.ics.vegao1.service.api_gateway.logger.ServiceLogger;
 
 public class GatewayConfigs {
     public static final int MIN_SERVICE_PORT = 1024;
     public static final int MAX_SERVICE_PORT = 65535;
-
+    // Default database configs
+    public final int DEFAULT_CONNECTIONS = 3;
     // Default gateway configs
     private final String DEFAULT_SCHEME = "http://";
     private final String DEFAULT_HOSTNAME = "0.0.0.0";
-    private final int    DEFAULT_PORT = 6243;
+    private final int DEFAULT_PORT = 6243;
     private final String DEFAULT_PATH = "/api/g";
     // Default logger configs
     private final String DEFAULT_OUTPUTDIR = "./logs/";
     private final String DEFAULT_OUTPUTFILE = "gateway.log";
-    // Default database configs
-    public final int    DEFAULT_CONNECTIONS = 3;
-
     // Gateway configs
     private String scheme;
     private String hostName;
@@ -39,7 +37,8 @@ public class GatewayConfigs {
 
     private boolean dbConfigValid = true;
 
-    public GatewayConfigs() { }
+    public GatewayConfigs() {
+    }
 
     public GatewayConfigs(ConfigsModel cm) throws NullPointerException {
         if (cm == null) {

@@ -1,7 +1,7 @@
 package edu.uci.ics.vegao1.service.api_gateway.configs;
 
-import edu.uci.ics.vegao1.service.api_gateway.logger.ServiceLogger;
 import edu.uci.ics.vegao1.service.api_gateway.GatewayService;
+import edu.uci.ics.vegao1.service.api_gateway.logger.ServiceLogger;
 
 public class MovieConfigs {
     // Movie service configs
@@ -24,7 +24,8 @@ public class MovieConfigs {
     private String EPStarIn;
     private String EPRating;
 
-    public MovieConfigs() { }
+    public MovieConfigs() {
+    }
 
     public MovieConfigs(ConfigsModel cm) throws NullPointerException {
         if (cm == null) {

@@ -1,7 +1,7 @@
 package edu.uci.ics.vegao1.service.api_gateway.configs;
 
-import edu.uci.ics.vegao1.service.api_gateway.logger.ServiceLogger;
 import edu.uci.ics.vegao1.service.api_gateway.GatewayService;
+import edu.uci.ics.vegao1.service.api_gateway.logger.ServiceLogger;
 
 public class IDMConfigs {
     // IDM service configs

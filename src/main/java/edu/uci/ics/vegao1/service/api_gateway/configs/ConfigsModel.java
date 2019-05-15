@@ -3,17 +3,18 @@ package edu.uci.ics.vegao1.service.api_gateway.configs;
 import java.util.Map;
 
 public class ConfigsModel {
-    private Map<String,String> gatewayConfig;
-    private Map<String,String> loggerConfig;
-    private Map<String,String> databaseConfig;
-    private Map<String,String> idmConfig;
-    private Map<String,String> idmEndpoints;
-    private Map<String,String> moviesConfig;
-    private Map<String,String> moviesEndpoints;
-    private Map<String,String> billingConfig;
-    private Map<String,String> billingEndpoints;
+    private Map<String, String> gatewayConfig;
+    private Map<String, String> loggerConfig;
+    private Map<String, String> databaseConfig;
+    private Map<String, String> idmConfig;
+    private Map<String, String> idmEndpoints;
+    private Map<String, String> moviesConfig;
+    private Map<String, String> moviesEndpoints;
+    private Map<String, String> billingConfig;
+    private Map<String, String> billingEndpoints;
 
-    public ConfigsModel() { }
+    public ConfigsModel() {
+    }
 
     public Map<String, String> getGatewayConfig() {
         return gatewayConfig;

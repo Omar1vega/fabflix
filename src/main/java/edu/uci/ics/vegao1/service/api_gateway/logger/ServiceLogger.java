@@ -17,7 +17,7 @@ public class ServiceLogger {
         try {
             // Create directory for logs
             File logDir = new File(outputDir);
-            if ( !(logDir.exists()) ) {
+            if (!(logDir.exists())) {
                 logDir.mkdir();
             }
 

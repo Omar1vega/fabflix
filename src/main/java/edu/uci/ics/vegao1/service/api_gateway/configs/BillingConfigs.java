@@ -1,7 +1,7 @@
 package edu.uci.ics.vegao1.service.api_gateway.configs;
 
-import edu.uci.ics.vegao1.service.api_gateway.logger.ServiceLogger;
 import edu.uci.ics.vegao1.service.api_gateway.GatewayService;
+import edu.uci.ics.vegao1.service.api_gateway.logger.ServiceLogger;
 
 public class BillingConfigs {
     // Billing service configs
@@ -25,7 +25,8 @@ public class BillingConfigs {
     private String EPOrderPlace;
     private String EPOrderRetrieve;
 
-    public BillingConfigs() { }
+    public BillingConfigs() {
+    }
 
     public BillingConfigs(ConfigsModel cm) throws NullPointerException {
         if (cm == null) {
