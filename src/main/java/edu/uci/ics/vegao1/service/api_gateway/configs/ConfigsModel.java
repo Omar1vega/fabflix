@@ -1,4 +1,4 @@
-package edu.uci.ics.UCInetID.service.api_gateway.configs;
+package edu.uci.ics.vegao1.service.api_gateway.configs;
 
 import java.util.Map;
 

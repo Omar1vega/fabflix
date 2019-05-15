@@ -1,4 +1,4 @@
-package edu.uci.ics.UCInetID.service.api_gateway.resources;
+package edu.uci.ics.vegao1.service.api_gateway.resources;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

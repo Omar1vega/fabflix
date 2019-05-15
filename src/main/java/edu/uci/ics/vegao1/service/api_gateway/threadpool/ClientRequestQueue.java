@@ -1,4 +1,4 @@
-package edu.uci.ics.UCInetID.service.api_gateway.threadpool;
+package edu.uci.ics.vegao1.service.api_gateway.threadpool;
 
 public class ClientRequestQueue {
     private ListNode head;
@@ -13,10 +13,10 @@ public class ClientRequestQueue {
     }
 
     public synchronized ClientRequest dequeue() {
-
+        return null;
     }
 
     boolean isEmpty() {
-
+        return false;
     }
 }

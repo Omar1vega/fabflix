@@ -1,11 +1,10 @@
-package edu.uci.ics.UCInetID.service.api_gateway;
+package edu.uci.ics.vegao1.service.api_gateway;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import edu.uci.ics.UCInetID.service.api_gateway.configs.*;
-import edu.uci.ics.UCInetID.service.api_gateway.connectionpool.ConnectionPool;
-import edu.uci.ics.kpmckeow.service.api_gateway.configs.*;
-import edu.uci.ics.UCInetID.service.api_gateway.logger.ServiceLogger;
+import edu.uci.ics.vegao1.service.api_gateway.configs.*;
+import edu.uci.ics.vegao1.service.api_gateway.connectionpool.ConnectionPool;
+import edu.uci.ics.vegao1.service.api_gateway.logger.ServiceLogger;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.jackson.JacksonFeature;
@@ -170,7 +169,7 @@ public class GatewayService {
             URI uri = UriBuilder.fromUri(scheme + hostName + path).port(port).build();
             ServiceLogger.LOGGER.config("Final URI: " + uri.toString());
 
-            ResourceConfig rc = new ResourceConfig().packages("edu.uci.ics.UCInetID.service.api_gateway.resources");
+            ResourceConfig rc = new ResourceConfig().packages("edu.uci.ics.vegao1.service.api_gateway.resources");
             ServiceLogger.LOGGER.config("Set Jersey resources.");
             rc.register(JacksonFeature.class);
             ServiceLogger.LOGGER.config("Set Jackson as serializer.");
@@ -185,7 +184,7 @@ public class GatewayService {
 
     private void exitAppFailure(String message) {
         System.err.println("ERROR: " + message);
-        System.err.println("Usage options: " );
+        System.err.println("Usage options: ");
         System.err.println("\tSpecify configuration file:");
         System.err.println("\t\t--config [file]");
         System.err.println("\t\t-c [file]");

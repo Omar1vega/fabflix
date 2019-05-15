@@ -1,9 +1,7 @@
-package edu.uci.ics.UCInetID.service.api_gateway.configs;
+package edu.uci.ics.vegao1.service.api_gateway.configs;
 
-import edu.uci.ics.UCInetID.service.api_gateway.logger.ServiceLogger;
-
-import static edu.uci.ics.UCInetID.service.api_gateway.GatewayService.ANSI_RED;
-import static edu.uci.ics.UCInetID.service.api_gateway.GatewayService.ANSI_RESET;
+import edu.uci.ics.vegao1.service.api_gateway.logger.ServiceLogger;
+import edu.uci.ics.vegao1.service.api_gateway.GatewayService;
 
 public class IDMConfigs {
     // IDM service configs
@@ -23,37 +21,37 @@ public class IDMConfigs {
 
     public IDMConfigs(ConfigsModel cm) throws NullPointerException {
         if (cm == null) {
-            throw new NullPointerException(ANSI_RED + "Unable to create Configs from ConfigsModel." + ANSI_RESET);
+            throw new NullPointerException(GatewayService.ANSI_RED + "Unable to create Configs from ConfigsModel." + GatewayService.ANSI_RESET);
         }
 
         /* -------------------- Service Configurations -------------------- */
 
         scheme = cm.getIdmConfig().get("scheme");
         if (scheme == null) {
-            System.err.println(ANSI_RED + "IDM scheme not found in configuration file." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "IDM scheme not found in configuration file." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[IDM] scheme: " + scheme);
         }
 
         hostName = cm.getIdmConfig().get("hostName");
         if (hostName == null) {
-            System.err.println(ANSI_RED + "IDM host name not found in configuration file." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "IDM host name not found in configuration file." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[IDM] hostName: " + hostName);
         }
 
         port = Integer.parseInt(cm.getIdmConfig().get("port"));
         if (port == 0) {
-            System.err.println(ANSI_RED + "No port found in configuration file." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No port found in configuration file." + GatewayService.ANSI_RESET);
         } else if (port < GatewayConfigs.MIN_SERVICE_PORT || port > GatewayConfigs.MAX_SERVICE_PORT) {
-            System.err.println(ANSI_RED + "Port is not within valid range." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "Port is not within valid range." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[IDM] port: " + port);
         }
 
         path = cm.getIdmConfig().get("path");
         if (path == null) {
-            System.err.println(ANSI_RED + "IDM path not found in configuration file." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "IDM path not found in configuration file." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[IDM] path: " + path);
         }
@@ -63,28 +61,28 @@ public class IDMConfigs {
 
         EPUserRegister = cm.getIdmEndpoints().get("EPUserRegister");
         if (EPUserRegister == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/idm/register found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/idm/register found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[IDM][EP] Register User: " + EPUserRegister);
         }
 
         EPUserLogin = cm.getIdmConfig().get("EPUserLogin");
         if (EPUserLogin == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/idm/login found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/idm/login found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[IDM][EP] Login User: " + EPUserLogin);
         }
 
         EPSessionVerify = cm.getIdmConfig().get("EPSessionVerify");
         if (EPSessionVerify == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/idm/session found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/idm/session found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[IDM][EP] Verify Session: " + EPSessionVerify);
         }
 
         EPUserPrivilegeVerify = cm.getIdmConfig().get("EPUserPrivilegeVerify");
         if (EPUserPrivilegeVerify == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/idm/privilege found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/idm/privilege found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[IDM][EP] Verify User Privilege: " + EPUserPrivilegeVerify);
         }

@@ -1,4 +1,4 @@
-package edu.uci.ics.UCInetID.service.api_gateway.logger;
+package edu.uci.ics.vegao1.service.api_gateway.logger;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -1,6 +1,6 @@
-package edu.uci.ics.UCInetID.service.api_gateway.logger;
+package edu.uci.ics.vegao1.service.api_gateway.logger;
 
-import edu.uci.ics.UCInetID.service.api_gateway.GatewayService;
+import edu.uci.ics.vegao1.service.api_gateway.GatewayService;
 
 import java.io.File;
 import java.io.IOException;

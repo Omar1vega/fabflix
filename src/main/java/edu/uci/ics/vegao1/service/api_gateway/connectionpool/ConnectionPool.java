@@ -1,4 +1,4 @@
-package edu.uci.ics.UCInetID.service.api_gateway.connectionpool;
+package edu.uci.ics.vegao1.service.api_gateway.connectionpool;
 
 import java.sql.Connection;
 import java.util.LinkedList;
@@ -15,7 +15,7 @@ public class ConnectionPool {
     }
 
     public Connection requestCon() {
-
+        return null;
     }
 
     public void releaseCon(Connection con) {
@@ -23,6 +23,7 @@ public class ConnectionPool {
     }
 
     private Connection createConnection() {
+        return null;
 
     }
 }

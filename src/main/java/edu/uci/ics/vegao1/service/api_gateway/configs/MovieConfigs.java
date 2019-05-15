@@ -1,9 +1,7 @@
-package edu.uci.ics.UCInetID.service.api_gateway.configs;
+package edu.uci.ics.vegao1.service.api_gateway.configs;
 
-import edu.uci.ics.UCInetID.service.api_gateway.logger.ServiceLogger;
-
-import static edu.uci.ics.UCInetID.service.api_gateway.GatewayService.ANSI_RED;
-import static edu.uci.ics.UCInetID.service.api_gateway.GatewayService.ANSI_RESET;
+import edu.uci.ics.vegao1.service.api_gateway.logger.ServiceLogger;
+import edu.uci.ics.vegao1.service.api_gateway.GatewayService;
 
 public class MovieConfigs {
     // Movie service configs
@@ -30,119 +28,119 @@ public class MovieConfigs {
 
     public MovieConfigs(ConfigsModel cm) throws NullPointerException {
         if (cm == null) {
-            throw new NullPointerException(ANSI_RED + "Unable to create Configs from ConfigsModel." + ANSI_RESET);
+            throw new NullPointerException(GatewayService.ANSI_RED + "Unable to create Configs from ConfigsModel." + GatewayService.ANSI_RESET);
         }
 
         scheme = cm.getMoviesConfig().get("scheme");
         if (scheme == null) {
-            System.err.println(ANSI_RED + "IDM scheme not found in configuration file." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "IDM scheme not found in configuration file." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Movies] scheme: " + scheme);
         }
 
         hostName = cm.getMoviesConfig().get("hostName");
         if (hostName == null) {
-            System.err.println(ANSI_RED + "IDM host name not found in configuration file." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "IDM host name not found in configuration file." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Movies] hostName: " + hostName);
         }
 
         port = Integer.parseInt(cm.getMoviesConfig().get("port"));
         if (port == 0) {
-            System.err.println(ANSI_RED + "No port found in configuration file." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No port found in configuration file." + GatewayService.ANSI_RESET);
         } else if (port < GatewayConfigs.MIN_SERVICE_PORT || port > GatewayConfigs.MAX_SERVICE_PORT) {
-            System.err.println(ANSI_RED + "Port is not within valid range." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "Port is not within valid range." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Movies] port: " + port);
         }
 
         path = cm.getMoviesConfig().get("path");
         if (path == null) {
-            System.err.println(ANSI_RED + "IDM path not found in configuration file." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "IDM path not found in configuration file." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Movies] path: " + path);
         }
 
         EPMovieSearch = cm.getMoviesEndpoints().get("EPMovieSearch");
         if (EPMovieSearch == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/movies/search found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/movies/search found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Movies][EP] Search Movie: " + EPMovieSearch);
         }
 
         EPMovieGet = cm.getMoviesEndpoints().get("EPMovieGet");
         if (EPMovieGet == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/movies/{movieid} found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/movies/{movieid} found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Movies][EP] Get Movie: " + EPMovieGet);
         }
 
         EPMovieAdd = cm.getMoviesEndpoints().get("EPMovieAdd");
         if (EPMovieAdd == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/movies/add found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/movies/add found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Movies][EP] Add Movie: " + EPMovieAdd);
         }
 
         EPMovieDelete = cm.getMoviesEndpoints().get("EPMovieDelete");
         if (EPMovieDelete == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/movies/delete found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/movies/delete found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Movies][EP] Delete Movie: " + EPMovieDelete);
         }
 
         EPGenreGet = cm.getMoviesEndpoints().get("EPGenreGet");
         if (EPGenreGet == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/movies/genre found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/movies/genre found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Movies][EP] Get All Genres: " + EPGenreGet);
         }
 
         EPGenreAdd = cm.getMoviesEndpoints().get("EPGenreAdd");
         if (EPGenreAdd == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/movies/genre/add found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/movies/genre/add found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Movies][EP] Add Genre: " + EPGenreAdd);
         }
 
         EPGenreMovie = cm.getMoviesEndpoints().get("EPGenreMovie");
         if (EPGenreMovie == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/movies/genre/{movieid} found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/movies/genre/{movieid} found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Movies][EP] Get All Genres For Movie: " + EPGenreMovie);
         }
 
         EPStarSearch = cm.getMoviesEndpoints().get("EPStarSearch");
         if (EPStarSearch == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/movies/star/search found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/movies/star/search found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Movies][EP] Search Star: " + EPStarSearch);
         }
 
         EPStarGet = cm.getMoviesEndpoints().get("EPStarGet");
         if (EPStarGet == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/movies/star/{starid} found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/movies/star/{starid} found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Movies][EP] Get Star: " + EPStarGet);
         }
 
         EPStarAdd = cm.getMoviesEndpoints().get("EPStarAdd");
         if (EPStarAdd == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/movies/star/add found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/movies/star/add found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Movies][EP] Add Star: " + EPStarAdd);
         }
 
         EPStarIn = cm.getMoviesEndpoints().get("EPStarIn");
         if (EPStarIn == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/movies/star/starsin found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/movies/star/starsin found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Movies][EP] Add Star to Movie: " + EPStarIn);
         }
 
         EPRating = cm.getMoviesEndpoints().get("EPRating");
         if (EPRating == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/movies/EPRating found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/movies/EPRating found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Movies][EP] Update Movie Rating: " + EPRating);
         }

@@ -1,6 +1,6 @@
-package edu.uci.ics.UCInetID.service.api_gateway.threadpool;
+package edu.uci.ics.vegao1.service.api_gateway.threadpool;
 
-import edu.uci.ics.UCInetID.service.api_gateway.models.RequestModel;
+import edu.uci.ics.vegao1.service.api_gateway.models.RequestModel;
 
 public class ClientRequest {
     private String email;

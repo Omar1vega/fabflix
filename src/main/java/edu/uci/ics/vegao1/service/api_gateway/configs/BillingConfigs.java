@@ -1,9 +1,7 @@
-package edu.uci.ics.UCInetID.service.api_gateway.configs;
+package edu.uci.ics.vegao1.service.api_gateway.configs;
 
-import edu.uci.ics.UCInetID.service.api_gateway.logger.ServiceLogger;
-
-import static edu.uci.ics.UCInetID.service.api_gateway.GatewayService.ANSI_RED;
-import static edu.uci.ics.UCInetID.service.api_gateway.GatewayService.ANSI_RESET;
+import edu.uci.ics.vegao1.service.api_gateway.logger.ServiceLogger;
+import edu.uci.ics.vegao1.service.api_gateway.GatewayService;
 
 public class BillingConfigs {
     // Billing service configs
@@ -31,37 +29,37 @@ public class BillingConfigs {
 
     public BillingConfigs(ConfigsModel cm) throws NullPointerException {
         if (cm == null) {
-            throw new NullPointerException(ANSI_RED + "Unable to create Configs from ConfigsModel." + ANSI_RESET);
+            throw new NullPointerException(GatewayService.ANSI_RED + "Unable to create Configs from ConfigsModel." + GatewayService.ANSI_RESET);
         }
 
         /* -------------------- Service Configurations -------------------- */
 
         scheme = cm.getBillingConfig().get("scheme");
         if (scheme == null) {
-            System.err.println(ANSI_RED + "IDM scheme not found in configuration file." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "IDM scheme not found in configuration file." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[IDM] scheme: " + scheme);
         }
 
         hostName = cm.getBillingConfig().get("hostName");
         if (hostName == null) {
-            System.err.println(ANSI_RED + "IDM host name not found in configuration file." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "IDM host name not found in configuration file." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[IDM] hostName: " + hostName);
         }
 
         port = Integer.parseInt(cm.getBillingConfig().get("port"));
         if (port == 0) {
-            System.err.println(ANSI_RED + "No port found in configuration file." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No port found in configuration file." + GatewayService.ANSI_RESET);
         } else if (port < GatewayConfigs.MIN_SERVICE_PORT || port > GatewayConfigs.MAX_SERVICE_PORT) {
-            System.err.println(ANSI_RED + "Port is not within valid range." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "Port is not within valid range." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[IDM] port: " + port);
         }
 
         path = cm.getBillingConfig().get("path");
         if (path == null) {
-            System.err.println(ANSI_RED + "IDM path not found in configuration file." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "IDM path not found in configuration file." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[IDM] path: " + path);
         }
@@ -71,91 +69,91 @@ public class BillingConfigs {
 
         EPCartUpdate = cm.getBillingConfig().get("EPCartUpdate");
         if (EPCartUpdate == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/billing/cart/update found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/billing/cart/update found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Billing][EP] Update Cart: " + EPCartUpdate);
         }
 
         EPCartDelete = cm.getBillingConfig().get("EPCartDelete");
         if (EPCartDelete == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/billing/cart/delete found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/billing/cart/delete found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Billing][EP] Delete Cart: " + EPCartDelete);
         }
 
         EPCartRetrieve = cm.getBillingConfig().get("EPCartRetrieve");
         if (EPCartRetrieve == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/billing/cart/retrieve found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/billing/cart/retrieve found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Billing][EP] Retrieve Cart: " + EPCartRetrieve);
         }
 
         EPCartClear = cm.getBillingConfig().get("EPCartClear");
         if (EPCartClear == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/billing/cart/clear found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/billing/cart/clear found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Billing][EP] Clear Cart: " + EPCartClear);
         }
 
         EPCcInsert = cm.getBillingConfig().get("EPCcInsert");
         if (EPCcInsert == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/billing/creditcard/insert found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/billing/creditcard/insert found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Billing][EP] Insert Credit Card: " + EPCcInsert);
         }
 
         EPCcUpdate = cm.getBillingConfig().get("EPCcUpdate");
         if (EPCcUpdate == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/billing/creditcard/update found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/billing/creditcard/update found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Billing][EP] Update Credit Card: " + EPCcUpdate);
         }
 
         EPCcDelete = cm.getBillingConfig().get("EPCcDelete");
         if (EPCcDelete == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/billing/creditcard/delete found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/billing/creditcard/delete found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Billing][EP] Delete Credit Card: " + EPCcDelete);
         }
 
         EPCcRetrieve = cm.getBillingConfig().get("EPCcRetrieve");
         if (EPCcRetrieve == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/billing/creditcard/retrieve found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/billing/creditcard/retrieve found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Billing][EP] Retrieve Credit Card: " + EPCcRetrieve);
         }
 
         EPCustomerInsert = cm.getBillingConfig().get("EPCustomerInsert");
         if (EPCustomerInsert == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/billing/customer/insert found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/billing/customer/insert found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Billing][EP] Insert Customer: " + EPCustomerInsert);
         }
 
         EPCustomerUpdate = cm.getBillingConfig().get("EPCustomerUpdate");
         if (EPCustomerUpdate == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/billing/customer/update found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/billing/customer/update found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Billing][EP] Update Customer: " + EPCustomerUpdate);
         }
 
         EPCustomerRetrieve = cm.getBillingConfig().get("EPCustomerRetrieve");
         if (EPCustomerRetrieve == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/billing/customer/retrieve found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/billing/customer/retrieve found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Billing][EP] Retrieve Customer: " + EPCustomerRetrieve);
         }
 
         EPOrderPlace = cm.getBillingConfig().get("EPOrderPlace");
         if (EPOrderPlace == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/billing/order/place found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/billing/order/place found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Billing][EP] Place Order: " + EPOrderPlace);
         }
 
         EPOrderRetrieve = cm.getBillingConfig().get("EPOrderRetrieve");
         if (EPOrderRetrieve == null) {
-            System.err.println(ANSI_RED + "No path for endpoint /api/billing/order/retrieve found." + ANSI_RESET);
+            System.err.println(GatewayService.ANSI_RED + "No path for endpoint /api/billing/order/retrieve found." + GatewayService.ANSI_RESET);
         } else {
             System.err.println("[Billing][EP] Retrieve Order: " + EPOrderRetrieve);
         }

@@ -1,8 +1,7 @@
-package edu.uci.ics.UCInetID.service.api_gateway.configs;
+package edu.uci.ics.vegao1.service.api_gateway.configs;
 
-import edu.uci.ics.UCInetID.service.api_gateway.logger.ServiceLogger;
-
-import static edu.uci.ics.UCInetID.service.api_gateway.GatewayService.*;
+import edu.uci.ics.vegao1.service.api_gateway.logger.ServiceLogger;
+import edu.uci.ics.vegao1.service.api_gateway.GatewayService;
 
 public class GatewayConfigs {
     public static final int MIN_SERVICE_PORT = 1024;
@@ -51,7 +50,7 @@ public class GatewayConfigs {
             scheme = cm.getGatewayConfig().get("scheme");
             if (scheme == null) {
                 scheme = DEFAULT_SCHEME;
-                System.err.println(ANSI_RED + "Scheme not found in configuration file. Using default." + ANSI_RESET);
+                System.err.println(GatewayService.ANSI_RED + "Scheme not found in configuration file. Using default." + GatewayService.ANSI_RESET);
             } else {
                 System.err.println("Scheme: " + scheme);
             }
@@ -59,7 +58,7 @@ public class GatewayConfigs {
             hostName = cm.getGatewayConfig().get("hostName");
             if (hostName == null) {
                 hostName = DEFAULT_HOSTNAME;
-                System.err.println(ANSI_RED + "Hostname not found in configuration file. Using default." + ANSI_RESET);
+                System.err.println(GatewayService.ANSI_RED + "Hostname not found in configuration file. Using default." + GatewayService.ANSI_RESET);
             } else {
                 System.err.println("Hostname: " + hostName);
             }
@@ -67,10 +66,10 @@ public class GatewayConfigs {
             port = Integer.parseInt(cm.getGatewayConfig().get("port"));
             if (port == 0) {
                 port = DEFAULT_PORT;
-                System.err.println(ANSI_RED + "Port not found in configuration file. Using default." + ANSI_RESET);
+                System.err.println(GatewayService.ANSI_RED + "Port not found in configuration file. Using default." + GatewayService.ANSI_RESET);
             } else if (port < MIN_SERVICE_PORT || port > MAX_SERVICE_PORT) {
                 port = DEFAULT_PORT;
-                System.err.println(ANSI_RED + "Port is not within valid range. Using default." + ANSI_RESET);
+                System.err.println(GatewayService.ANSI_RED + "Port is not within valid range. Using default." + GatewayService.ANSI_RESET);
             } else {
                 System.err.println("Port: " + port);
             }
@@ -78,7 +77,7 @@ public class GatewayConfigs {
             path = cm.getGatewayConfig().get("path");
             if (path == null) {
                 path = DEFAULT_PATH;
-                System.err.println(ANSI_RED + "Path not found in configuration file. Using default." + ANSI_RESET);
+                System.err.println(GatewayService.ANSI_RED + "Path not found in configuration file. Using default." + GatewayService.ANSI_RESET);
             } else {
                 System.err.println("Path: " + path);
             }
@@ -86,7 +85,7 @@ public class GatewayConfigs {
             requestDelay = Integer.parseInt(cm.getGatewayConfig().get("requestDelay"));
             if (requestDelay <= 0) {
                 requestDelay = 500;
-                System.err.println(ANSI_RED + "Request delay not found in configuration file. Using default." + ANSI_RESET);
+                System.err.println(GatewayService.ANSI_RED + "Request delay not found in configuration file. Using default." + GatewayService.ANSI_RESET);
             } else {
                 System.err.println("Request Delay: " + requestDelay);
             }
@@ -95,7 +94,7 @@ public class GatewayConfigs {
             outputDir = cm.getLoggerConfig().get("outputDir");
             if (outputDir == null) {
                 outputDir = DEFAULT_OUTPUTDIR;
-                System.err.println(ANSI_RED + "Logging output directory not found in configuration file. Using default." + ANSI_RESET);
+                System.err.println(GatewayService.ANSI_RED + "Logging output directory not found in configuration file. Using default." + GatewayService.ANSI_RESET);
             } else {
                 System.err.println("Logging output directory: " + outputDir);
             }
@@ -103,7 +102,7 @@ public class GatewayConfigs {
             outputFile = cm.getLoggerConfig().get("outputFile");
             if (outputFile == null) {
                 outputFile = DEFAULT_OUTPUTFILE;
-                System.err.println(ANSI_RED + "Logging output file not found in configuration file. Using default." + ANSI_RESET);
+                System.err.println(GatewayService.ANSI_RED + "Logging output file not found in configuration file. Using default." + GatewayService.ANSI_RESET);
             } else {
                 System.err.println("Logging output file: " + outputFile);
             }
@@ -112,14 +111,14 @@ public class GatewayConfigs {
             dbConnections = Integer.parseInt(cm.getDatabaseConfig().get("dbConnections"));
             if (dbConnections < 1) {
                 dbConnections = 3;
-                System.err.println(ANSI_RED + "Number of connections has invalid value." + ANSI_RESET);
+                System.err.println(GatewayService.ANSI_RED + "Number of connections has invalid value." + GatewayService.ANSI_RESET);
             } else {
                 System.err.println("Database connection: " + dbConnections);
             }
 
             dbUsername = cm.getDatabaseConfig().get("dbUsername");
             if (dbUsername == null) {
-                System.err.println(ANSI_RED + "No database username found in configuration file." + ANSI_RESET);
+                System.err.println(GatewayService.ANSI_RED + "No database username found in configuration file." + GatewayService.ANSI_RESET);
                 dbConfigValid = false;
             } else {
                 System.err.println("Database username: " + dbUsername);
@@ -127,7 +126,7 @@ public class GatewayConfigs {
 
             dbPassword = cm.getDatabaseConfig().get("dbPassword");
             if (dbPassword == null) {
-                System.err.println(ANSI_RED + "No database password found in configuration file." + ANSI_RESET);
+                System.err.println(GatewayService.ANSI_RED + "No database password found in configuration file." + GatewayService.ANSI_RESET);
                 dbConfigValid = false;
             } else {
                 System.err.println("Database password found in configuration file.");
@@ -135,7 +134,7 @@ public class GatewayConfigs {
 
             dbHostname = cm.getDatabaseConfig().get("dbHostname");
             if (dbHostname == null) {
-                System.err.println(ANSI_RED + "No database hostname found in configuration file." + ANSI_RESET);
+                System.err.println(GatewayService.ANSI_RED + "No database hostname found in configuration file." + GatewayService.ANSI_RESET);
                 dbConfigValid = false;
             } else {
                 System.err.println("Database hostname: " + dbHostname);
@@ -143,10 +142,10 @@ public class GatewayConfigs {
 
             dbPort = Integer.parseInt(cm.getDatabaseConfig().get("dbPort"));
             if (dbPort == 0) {
-                System.err.println(ANSI_RED + "No database port found in configuration file." + ANSI_RESET);
+                System.err.println(GatewayService.ANSI_RED + "No database port found in configuration file." + GatewayService.ANSI_RESET);
                 dbConfigValid = false;
             } else if (dbPort < MIN_SERVICE_PORT || dbPort > MAX_SERVICE_PORT) {
-                System.err.println(ANSI_RED + "Database port is not within a valid range." + ANSI_RESET);
+                System.err.println(GatewayService.ANSI_RED + "Database port is not within a valid range." + GatewayService.ANSI_RESET);
                 dbConfigValid = false;
             } else {
                 System.err.println("Database port: " + dbPort);
@@ -154,7 +153,7 @@ public class GatewayConfigs {
 
             dbName = cm.getDatabaseConfig().get("dbName");
             if (dbName == null) {
-                System.err.println(ANSI_RED + "No database name found in configuration file." + ANSI_RESET);
+                System.err.println(GatewayService.ANSI_RED + "No database name found in configuration file." + GatewayService.ANSI_RESET);
                 dbConfigValid = false;
             } else {
                 System.err.println("Database name: " + dbName);
@@ -162,7 +161,7 @@ public class GatewayConfigs {
 
             dbDriver = cm.getDatabaseConfig().get("dbDriver");
             if (dbDriver == null) {
-                System.err.println(ANSI_RED + "No driver found in configuration file." + ANSI_RESET);
+                System.err.println(GatewayService.ANSI_RED + "No driver found in configuration file." + GatewayService.ANSI_RESET);
                 dbConfigValid = false;
             } else {
                 System.err.println("Database driver: " + dbDriver);
@@ -170,7 +169,7 @@ public class GatewayConfigs {
 
             dbSettings = cm.getDatabaseConfig().get("dbSettings");
             if (dbSettings == null) {
-                System.err.println(ANSI_RED + "No connection settings found in configuration file." + ANSI_RESET);
+                System.err.println(GatewayService.ANSI_RED + "No connection settings found in configuration file." + GatewayService.ANSI_RESET);
                 dbConfigValid = false;
             } else {
                 System.err.println("Database connection settings: " + dbSettings);
