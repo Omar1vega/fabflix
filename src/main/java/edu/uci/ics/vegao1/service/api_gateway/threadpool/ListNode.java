@@ -5,7 +5,8 @@ public class ListNode {
     private ListNode next;
 
     public ListNode(ClientRequest clientRequest, ListNode next) {
-
+        this.clientRequest = clientRequest;
+        this.next = next;
     }
 
     public ClientRequest getClientRequest() {
