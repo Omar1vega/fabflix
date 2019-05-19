@@ -1,6 +1,6 @@
-package edu.uci.ics.UCInetID.service.movies.configs;
+package edu.uci.ics.vegao1.service.movies.configs;
 
-import edu.uci.ics.UCInetID.service.movies.logger.ServiceLogger;
+import edu.uci.ics.vegao1.service.movies.logger.ServiceLogger;
 
 public class MovieConfigs {
     public final static int MIN_SERVICE_PORT = 1024;

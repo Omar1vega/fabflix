@@ -1,4 +1,4 @@
-package edu.uci.ics.UCInetID.service.movies.logger;
+package edu.uci.ics.vegao1.service.movies.logger;
 
 import java.io.File;
 import java.io.IOException;

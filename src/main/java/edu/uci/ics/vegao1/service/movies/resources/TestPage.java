@@ -1,6 +1,6 @@
-package edu.uci.ics.UCInetID.service.movies.resources;
+package edu.uci.ics.vegao1.service.movies.resources;
 
-import edu.uci.ics.UCInetID.service.movies.logger.ServiceLogger;
+import edu.uci.ics.vegao1.service.movies.logger.ServiceLogger;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
