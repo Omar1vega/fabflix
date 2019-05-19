@@ -1,9 +1,10 @@
 gatewayConfig:
-  scheme:
-  hostName:
+  scheme: http://
+  hostName: 0.0.0.0
   port:
-  path:
+  path: /api/g
   requestDelay: 500
+  numThreads: 3
 
 loggerConfig:
   outputDir: ./logs/
@@ -60,6 +61,7 @@ billingConfig:
 billingEndpoints:
   EPCartUpdate:
   EPCartDelete:
+  EPCartInsert:
   EPCartRetrieve:
   EPCartClear:
   EPCcInsert:
