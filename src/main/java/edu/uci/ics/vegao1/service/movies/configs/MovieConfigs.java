@@ -8,7 +8,7 @@ public class MovieConfigs {
     // Default service configs
     private final String DEFAULT_SCHEME = "http://";
     private final String DEFAULT_HOSTNAME = "0.0.0.0";
-    private final int    DEFAULT_PORT = 6243;
+    private final int DEFAULT_PORT = 6243;
     private final String DEFAULT_PATH = "/api/movies";
     // Default logger configs
     private final String DEFAULT_OUTPUTDIR = "./logs/";
@@ -17,7 +17,7 @@ public class MovieConfigs {
     // Service configs
     private String scheme;
     private String hostName;
-    private int    port;
+    private int port;
     private String path;
     // Logger configs
     private String outputDir;
@@ -26,14 +26,18 @@ public class MovieConfigs {
     private String dbUsername;
     private String dbPassword;
     private String dbHostname;
-    private int    dbPort;
+    private int dbPort;
     private String dbName;
     private String dbDriver;
     private String dbSettings;
 
     private boolean dbConfigValid = true;
 
-    public MovieConfigs() { }
+    // IDM Configs
+    private IDMConfigs idmConfigs = new IDMConfigs();
+
+    public MovieConfigs() {
+    }
 
     public MovieConfigs(ConfigsModel cm) throws NullPointerException {
         if (cm == null) {
@@ -152,6 +156,8 @@ public class MovieConfigs {
                 System.err.println("Database connection settings: " + dbSettings);
             }
         }
+
+        idmConfigs = new IDMConfigs(cm);
     }
 
     public void currentConfigs() {
@@ -229,4 +235,9 @@ public class MovieConfigs {
     public boolean isDbConfigValid() {
         return dbConfigValid;
     }
+
+    public IDMConfigs getIdmConfigs() {
+        return idmConfigs;
+    }
 }
+
