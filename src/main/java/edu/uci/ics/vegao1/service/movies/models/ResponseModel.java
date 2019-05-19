@@ -1,10 +1,13 @@
 package edu.uci.ics.vegao1.service.movies.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ResponseModel {
+    EMAIL_INVALID_FORMAT(-11, "Email address has invalid format."),
+    EMAIL_INVALID_LENGTH(-10, "Email address has invalid length"),
     JSON_PARSE_EXCEPTION(-3, "JSON Parse Exception."),
     JSON_MAPPING_EXCEPTION(-2, "JSON Mapping Exception."),
     INSUFFIECIENT_PRIVILEGE(141, "User has insufficient privilege."),
@@ -44,7 +47,7 @@ public enum ResponseModel {
     private int resultCode;
     private String message;
 
-
+    @JsonCreator
     ResponseModel(@JsonProperty("resultCode") int resultCode, @JsonProperty("message") String message) {
         this.resultCode = resultCode;
         this.message = message;
