@@ -1,10 +1,7 @@
 package edu.uci.ics.vegao1.service.movies.resources;
 
 import edu.uci.ics.vegao1.service.movies.logger.ServiceLogger;
-import edu.uci.ics.vegao1.service.movies.models.GenericResponseModel;
-import edu.uci.ics.vegao1.service.movies.models.ResponseModel;
-import edu.uci.ics.vegao1.service.movies.models.SearchRequestModel;
-import edu.uci.ics.vegao1.service.movies.models.SearchResponseModel;
+import edu.uci.ics.vegao1.service.movies.models.*;
 import edu.uci.ics.vegao1.service.movies.records.MovieRecords;
 import edu.uci.ics.vegao1.service.movies.records.UserRecords;
 import edu.uci.ics.vegao1.service.movies.validation.UserValidations;
@@ -19,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 
-@Path("/")
+@Path("/get")
 public class MoviesPage {
     private static final int MOVIES_FOUMD = 210;
 
@@ -46,7 +43,7 @@ public class MoviesPage {
             boolean canAccessHidden = UserRecords.isPrivileged(responseModel);
             SearchRequestModel requestModel = new SearchRequestModel();
             requestModel.setId(id);
-            SearchResponseModel searchResponseModel = MovieRecords.searchMovies(requestModel, true);
+            SearchFullResponseModel searchResponseModel = MovieRecords.searchFullMovies(requestModel, true);
             boolean movieIsHidden = searchResponseModel.getResultCode() == MOVIES_FOUMD && searchResponseModel.getMovies().get(0).getHidden();
             ServiceLogger.LOGGER.info("Response: " + searchResponseModel);
 

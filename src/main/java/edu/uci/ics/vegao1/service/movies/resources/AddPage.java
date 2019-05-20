@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.uci.ics.vegao1.service.movies.logger.ServiceLogger;
 import edu.uci.ics.vegao1.service.movies.models.ResponseModel;
 import edu.uci.ics.vegao1.service.movies.models.SearchResponseModel;
-import edu.uci.ics.vegao1.service.movies.records.Movie;
+import edu.uci.ics.vegao1.service.movies.records.FullMovie;
 import edu.uci.ics.vegao1.service.movies.records.MovieRecords;
 import edu.uci.ics.vegao1.service.movies.records.UserRecords;
 import edu.uci.ics.vegao1.service.movies.validation.UserValidations;
@@ -46,9 +46,9 @@ public class AddPage {
         ResponseModel emailCheck = UserValidations.validateEmail(email);
         if (emailCheck.equals(ResponseModel.VALID_REQUEST)) {
             if (UserRecords.isPrivileged(UserRecords.verifyPrivilege(email))) {
-                Movie movie;
+                FullMovie movie;
                 try {
-                    movie = new ObjectMapper().readValue(json, Movie.class);
+                    movie = new ObjectMapper().readValue(json, FullMovie.class);
 
                     MovieRecords.addMovie(movie);
 

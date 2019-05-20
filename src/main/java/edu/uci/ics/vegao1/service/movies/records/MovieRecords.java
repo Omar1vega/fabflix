@@ -2,6 +2,7 @@ package edu.uci.ics.vegao1.service.movies.records;
 
 import edu.uci.ics.vegao1.service.movies.MovieService;
 import edu.uci.ics.vegao1.service.movies.logger.ServiceLogger;
+import edu.uci.ics.vegao1.service.movies.models.SearchFullResponseModel;
 import edu.uci.ics.vegao1.service.movies.models.SearchRequestModel;
 import edu.uci.ics.vegao1.service.movies.models.SearchResponseModel;
 
@@ -85,7 +86,52 @@ public class MovieRecords {
         return null;
     }
 
-    public static void addMovie(Movie movie) {
+    public static SearchFullResponseModel searchFullMovies(SearchRequestModel request, boolean showHidden) {
+        ServiceLogger.LOGGER.info("searchMovies");
+        String orderBy = isValid(request.getOrderby()) ? request.getOrderby() : DEFAULT_ORDER_BY;
+        String sort = isValid(request.getDirection()) ? request.getDirection() : DEFAULT_SORT;
+        int offset = isValid(request.getOffset()) ? request.getOffset() : 0;
+        int limit = isValid(request.getLimit()) ? request.getLimit() : 10;
+        ServiceLogger.LOGGER.info("limits set");
+
+        String query = SEARCH_MOVIES_STATEMENT + " ORDER BY " + orderBy + " " + sort + " LIMIT " + offset + ", " + limit;
+        try {
+            ServiceLogger.LOGGER.info("preparing statement");
+            PreparedStatement statement = MovieService.getCon().prepareStatement(query);
+
+            statement.setString(1, substring(request.getGenre()));
+            statement.setString(2, substring(request.getTitle()));
+            statement.setInt(3, showHidden ? 1 : 0);
+            statement.setString(4, substring(request.getId()));
+            ServiceLogger.LOGGER.info("Searching movies: " + statement.toString());
+
+
+            ResultSet resultSet = statement.executeQuery();
+            ServiceLogger.LOGGER.info("Statement executed");
+            List<FullMovie> movies = new ArrayList<>();
+            while (resultSet.next()) {
+                ServiceLogger.LOGGER.info("Movie Found");
+                FullMovie movie = FullMovie.fromResultSet(resultSet);
+                if (!showHidden) {
+                    movie.hide();
+                }
+                movies.add(movie);
+            }
+
+            if (!movies.isEmpty()) {
+                return new SearchFullResponseModel(210, "Found movies with search parameters.", movies);
+            } else {
+                return new SearchFullResponseModel(211, "No movies found with search parameters.");
+            }
+
+        } catch (SQLException e) {
+            ServiceLogger.LOGGER.info("Unable to search movies: " + e.getClass() + e.getCause().getLocalizedMessage());
+        }
+        return null;
+    }
+
+
+    public static void addMovie(FullMovie movie) {
         try {
             ServiceLogger.LOGGER.info("preparing statement");
             PreparedStatement statement = MovieService.getCon().prepareStatement(INSERT_MOVIE_STATEMENT);
@@ -94,11 +140,11 @@ public class MovieRecords {
             statement.setString(2, movie.getTitle());
             statement.setInt(3, movie.getYear());
             statement.setString(4, movie.getDirector());
-//            statement.setString(5, movie.getBackdrop_path());
-//            statement.setInt(6, movie.getBudget());
-//            statement.setString(7, movie.getOverview());
-//            statement.setString(8, movie.getPoster_path());
-//            statement.setInt(9, movie.getRevenue());
+            statement.setString(5, movie.getBackdrop_path());
+            statement.setInt(6, movie.getBudget());
+            statement.setString(7, movie.getOverview());
+            statement.setString(8, movie.getPoster_path());
+            statement.setInt(9, movie.getRevenue());
             statement.setInt(10, movie.getHidden() ? 1 : 0);
             ServiceLogger.LOGGER.info("Inserting movie: " + statement.toString());
             statement.execute();
