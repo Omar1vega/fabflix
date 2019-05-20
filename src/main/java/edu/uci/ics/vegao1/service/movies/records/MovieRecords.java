@@ -13,9 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieRecords {
+    public static final String INSERT_MOVIE_STATEMENT = "" +
+            "INSERT INTO movies (id, title, year, director, backdrop_path, budget, overview, poster_path, revenue, hidden)\n" +
+            "SELECT concat('cs', LPAD(max(cast(substring(movies.id, 3) AS DECIMAL)) + 1, 7, '0')), ?, ?, ?, ?, ?, ?, ?, ?, ?\n" +
+            "FROM movies\n" +
+            "WHERE id LIKE '%cs%';";
     public static final String CHECK_GENRE = "SELECT count(*) FROM genres WHERE id = ? AND NAME LIKE ?";
-    public static final String INSERT_MOVIE_STATEMENT = "INSERT INTO movies (id, title, year, director, backdrop_path, budget, overview, poster_path, revenue, hidden)\n" +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    private static final String NEW_MOVIE_ID_PREFIX = "cs";
     private static final String DEFAULT_ORDER_BY = "rating";
     private static final String DEFAULT_SORT = "DESC";
     private static final String SEARCH_MOVIES_STATEMENT =
@@ -130,27 +134,27 @@ public class MovieRecords {
         return null;
     }
 
-
     public static void addMovie(FullMovie movie) {
         try {
             ServiceLogger.LOGGER.info("preparing statement");
             PreparedStatement statement = MovieService.getCon().prepareStatement(INSERT_MOVIE_STATEMENT);
-
-            statement.setString(1, movie.getMovieId());
-            statement.setString(2, movie.getTitle());
-            statement.setInt(3, movie.getYear());
-            statement.setString(4, movie.getDirector());
-            statement.setString(5, movie.getBackdrop_path());
-            statement.setInt(6, movie.getBudget());
-            statement.setString(7, movie.getOverview());
-            statement.setString(8, movie.getPoster_path());
-            statement.setInt(9, movie.getRevenue());
-            statement.setInt(10, movie.getHidden() ? 1 : 0);
+            ServiceLogger.LOGGER.info("statemnt statement");
+            statement.setString(1, movie.getTitle());
+            statement.setInt(2, movie.getYear());
+            statement.setString(3, movie.getDirector());
+            statement.setString(4, movie.getBackdrop_path());
+            ServiceLogger.LOGGER.info("paths");
+            statement.setInt(5, movie.getBudget() == null ? 0 : movie.getBudget());
+            statement.setString(6, movie.getOverview());
+            statement.setString(7, movie.getPoster_path());
+            statement.setInt(8, movie.getRevenue() == null ? 0 : movie.getRevenue());
+            ServiceLogger.LOGGER.info("hidden: " + movie.getHidden());
+            statement.setInt(9, movie.getHidden() != null && movie.getHidden() ? 1 : 0);
             ServiceLogger.LOGGER.info("Inserting movie: " + statement.toString());
             statement.execute();
 
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             ServiceLogger.LOGGER.info("Unable to search movies: " + e.getClass() + e.getCause().getLocalizedMessage());
         }
     }

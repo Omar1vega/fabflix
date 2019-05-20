@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.uci.ics.vegao1.service.movies.logger.ServiceLogger;
+import edu.uci.ics.vegao1.service.movies.models.GenericResponseModel;
 import edu.uci.ics.vegao1.service.movies.models.ResponseModel;
 import edu.uci.ics.vegao1.service.movies.models.SearchResponseModel;
 import edu.uci.ics.vegao1.service.movies.records.FullMovie;
@@ -45,12 +46,15 @@ public class AddPage {
 
         ResponseModel emailCheck = UserValidations.validateEmail(email);
         if (emailCheck.equals(ResponseModel.VALID_REQUEST)) {
-            if (UserRecords.isPrivileged(UserRecords.verifyPrivilege(email))) {
+            GenericResponseModel genericResponseModel = UserRecords.verifyPrivilege(email);
+            boolean userIsPrivileged = UserRecords.isPrivileged(genericResponseModel);
+            if (userIsPrivileged) {
                 FullMovie movie;
                 try {
                     movie = new ObjectMapper().readValue(json, FullMovie.class);
 
                     MovieRecords.addMovie(movie);
+                    return Response.status(Response.Status.OK).entity(ResponseModel.MOVIE_SUCCESSFULLY_ADDED).build();
 
                 } catch (JsonMappingException e) {
                     ServiceLogger.LOGGER.info(e.getClass().getCanonicalName() + e.getLocalizedMessage());
@@ -63,11 +67,12 @@ public class AddPage {
                     return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
                 }
 
+            } else {
+                return Response.status(Response.Status.OK).entity(genericResponseModel).build();
             }
 
         } else {
             return Response.status(Response.Status.BAD_REQUEST).entity(emailCheck).build();
         }
-        return Response.status(Response.Status.OK).build();
     }
 }

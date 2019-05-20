@@ -2,10 +2,17 @@ package edu.uci.ics.vegao1.service.movies.records;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import javax.ws.rs.QueryParam;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Genre {
+    @QueryParam("id")
     private int id;
+    @QueryParam("name")
     private String name;
+
+    public Genre() {
+    }
 
     public Genre(int id, String name) {
         this.id = id;

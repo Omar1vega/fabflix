@@ -2,6 +2,7 @@ package edu.uci.ics.vegao1.service.movies.records;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import javax.ws.rs.QueryParam;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,17 +11,26 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FullMovie {
     private String movieId;
+    @QueryParam("title")
     private String title;
+    @QueryParam("year")
     private int year;
+    @QueryParam("director")
     private String director;
+    @QueryParam("backdrop_path")
     private String backdrop_path;
+    @QueryParam("budget")
     private Integer budget;
+    @QueryParam("overview")
     private String overview;
+    @QueryParam("poster_path")
     private String poster_path;
+    @QueryParam("revenue")
     private Integer revenue;
     private float rating;
     private int numVotes;
     private Boolean hidden;
+    @QueryParam("genres")
     private List<Genre> genres;
     private List<Star> stars;
 
