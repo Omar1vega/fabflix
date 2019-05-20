@@ -2,10 +2,7 @@ package edu.uci.ics.vegao1.service.movies.records;
 
 import edu.uci.ics.vegao1.service.movies.MovieService;
 import edu.uci.ics.vegao1.service.movies.logger.ServiceLogger;
-import edu.uci.ics.vegao1.service.movies.models.ResponseModel;
-import edu.uci.ics.vegao1.service.movies.models.SearchFullResponseModel;
-import edu.uci.ics.vegao1.service.movies.models.SearchRequestModel;
-import edu.uci.ics.vegao1.service.movies.models.SearchResponseModel;
+import edu.uci.ics.vegao1.service.movies.models.*;
 import edu.uci.ics.vegao1.service.movies.util.Db;
 
 import java.sql.PreparedStatement;
@@ -173,6 +170,15 @@ public class MovieRecords {
         } else {
             return ResponseModel.MOVIE_ALREADY_REMOVED;
         }
+    }
+
+    public static GenreResponseModel getGenres() throws SQLException {
+        ResultSet resultSet = Db.executeStatementForResult("SELECT * FROM genres");
+        List<Genre> genres = new ArrayList<>();
+        while (resultSet.next()) {
+            genres.add(Genre.fromResultSet(resultSet));
+        }
+        return new GenreResponseModel(ResponseModel.GENRES_SUCCESSFULLY_RETRIEVED, genres);
     }
 
     private static boolean isValid(String s) {
