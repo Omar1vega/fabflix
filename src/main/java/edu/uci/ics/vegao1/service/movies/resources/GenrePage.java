@@ -1,10 +1,11 @@
 package edu.uci.ics.vegao1.service.movies.resources;
 
 import edu.uci.ics.vegao1.service.movies.logger.ServiceLogger;
-import edu.uci.ics.vegao1.service.movies.models.GenreResponseModel;
+import edu.uci.ics.vegao1.service.movies.models.GenericResponseModel;
 import edu.uci.ics.vegao1.service.movies.models.ResponseModel;
 import edu.uci.ics.vegao1.service.movies.models.SearchResponseModel;
 import edu.uci.ics.vegao1.service.movies.records.MovieRecords;
+import edu.uci.ics.vegao1.service.movies.records.UserRecords;
 import edu.uci.ics.vegao1.service.movies.validation.UserValidations;
 
 import javax.ws.rs.GET;
@@ -36,10 +37,13 @@ public class GenrePage {
 
         ResponseModel emailCheck = UserValidations.validateEmail(email);
         if (emailCheck.equals(ResponseModel.VALID_REQUEST)) {
-
-            GenreResponseModel responseModel = MovieRecords.getGenres();
-            ServiceLogger.LOGGER.info("Response: " + responseModel);
-            return Response.status(Response.Status.OK).entity(responseModel).build();
+            GenericResponseModel genericResponseModel = UserRecords.verifyPrivilege(email);
+            boolean userIsPrivileged = UserRecords.isPrivileged(genericResponseModel);
+            if (userIsPrivileged) {
+                return Response.status(Response.Status.OK).entity(MovieRecords.getGenres()).build();
+            } else {
+                return Response.status(Response.Status.OK).entity(genericResponseModel).build();
+            }
         } else {
             return Response.status(Response.Status.BAD_REQUEST).entity(emailCheck).build();
         }
