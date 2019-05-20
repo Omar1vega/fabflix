@@ -181,6 +181,21 @@ public class MovieRecords {
         return new GenreResponseModel(ResponseModel.GENRES_SUCCESSFULLY_RETRIEVED, genres);
     }
 
+    public static GenreResponseModel getGenresInMovie(String movieId) throws SQLException {
+        ResultSet resultSet = Db.executeStatementForResult("SELECT id, name\n" +
+                "FROM genres_in_movies,\n" +
+                "     genres\n" +
+                "WHERE genres_in_movies.movieId = ? " +
+                "  AND genres.id = genres_in_movies.genreId\n" +
+                "GROUP BY genres.id;", movieId);
+        List<Genre> genres = new ArrayList<>();
+        while (resultSet.next()) {
+            genres.add(Genre.fromResultSet(resultSet));
+        }
+        return new GenreResponseModel(ResponseModel.GENRES_SUCCESSFULLY_RETRIEVED, genres);
+
+    }
+
     public static ResponseModel addGenre(Genre genre) throws SQLException {
         boolean genreAdded = Db.executeStatement("INSERT INTO genres (name) VALUES (?)", genre.getName());
         if (genreAdded) {

@@ -99,4 +99,33 @@ public class GenrePage {
             return Response.status(Response.Status.BAD_REQUEST).entity(emailCheck).build();
         }
     }
+
+    @Path("/{id}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response genresInMovies(@Context HttpHeaders headers, @PathParam("id") String movieId) throws SQLException {
+        ServiceLogger.LOGGER.info("Received request to retrieve genres movie with id: " + movieId);
+        String email = headers.getHeaderString("email");
+        String sessionID = headers.getHeaderString("sessionID");
+
+        if (email == null || email.trim().isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(new SearchResponseModel(-16, "Email not provided in request header.")).build();
+        }
+        if (sessionID == null || sessionID.trim().isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(new SearchResponseModel(-17, "SessionID not provided in request header.")).build();
+        }
+
+        ResponseModel emailCheck = UserValidations.validateEmail(email);
+        if (emailCheck.equals(ResponseModel.VALID_REQUEST)) {
+            GenericResponseModel genericResponseModel = UserRecords.verifyPrivilege(email);
+            boolean userIsPrivileged = UserRecords.isPrivileged(genericResponseModel);
+            if (userIsPrivileged) {
+                return Response.status(Response.Status.BAD_REQUEST).entity(MovieRecords.getGenresInMovie(movieId)).build();
+            } else {
+                return Response.status(Response.Status.OK).entity(genericResponseModel).build();
+            }
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).entity(emailCheck).build();
+        }
+    }
 }
