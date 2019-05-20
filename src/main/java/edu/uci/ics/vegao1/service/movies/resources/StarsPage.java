@@ -20,7 +20,7 @@ import javax.ws.rs.core.Response;
 
 @Path("stars")
 public class StarsPage {
-    @Path("/")
+    @Path("/search")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response hello(@Context HttpHeaders headers, @BeanParam StarRequestModel starRequestModel) {

@@ -14,8 +14,8 @@ public class StarRequestModel {
     private Integer offset;
     @QueryParam("limit")
     private Integer limit;
-    @QueryParam("sortby")
-    private String sortby;
+    @QueryParam("direction")
+    private String direction;
     @QueryParam("orderby")
     private String orderby;
 
@@ -69,22 +69,18 @@ public class StarRequestModel {
         this.limit = limit;
     }
 
-    @SuppressWarnings("unused") //Used by Jackson
-    public String getSortby() {
-        return sortby;
+    public String getDirection() {
+        return direction;
     }
 
-    @SuppressWarnings("unused") //Used by Jackson
-    public void setSortby(String sortby) {
-        this.sortby = sortby;
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 
-    @SuppressWarnings("unused") //Used by Jackson
     public String getOrderby() {
         return orderby;
     }
 
-    @SuppressWarnings("unused") //Used by Jackson
     public void setOrderby(String orderby) {
         this.orderby = orderby;
     }
@@ -92,12 +88,13 @@ public class StarRequestModel {
     @Override
     public String toString() {
         return "StarRequestModel{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", birthYear=" + birthYear +
                 ", movieTitle='" + movieTitle + '\'' +
                 ", offset=" + offset +
                 ", limit=" + limit +
-                ", sortby='" + sortby + '\'' +
+                ", direction='" + direction + '\'' +
                 ", orderby='" + orderby + '\'' +
                 '}';
     }

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StarRecords {
-    private static final String DEFAULT_SORTBY = "name";
+    private static final String DEFAULT_ORDER_BY = "name";
     private static final String DEFAULT_SORT = "ASC";
     private static final String GROUP_BY = "GROUP BY stars.id\n";
 
@@ -33,12 +33,12 @@ public class StarRecords {
 
         boolean yearProvided = isValid(request.getBirthYear());
         String yearClause = yearProvided ? "  AND stars.birthYear = ?\n" : "";
-        String sortby = isValid(request.getSortby()) ? request.getSortby() : DEFAULT_SORTBY;
-        String sort = isValid(request.getOrderby()) ? request.getOrderby() : DEFAULT_SORT;
+        String orderBy = isValid(request.getOrderby()) ? request.getOrderby() : DEFAULT_ORDER_BY;
+        String sort = isValid(request.getDirection()) ? request.getDirection() : DEFAULT_SORT;
         int offset = isValid(request.getOffset()) ? request.getOffset() : 0;
         int limit = isValid(request.getLimit()) ? request.getLimit() : 10;
 
-        String query = SEARCH_STARS_STATEMENT + yearClause + " " + GROUP_BY + " ORDER BY " + sortby + " " + sort + " LIMIT " + offset + ", " + limit;
+        String query = SEARCH_STARS_STATEMENT + yearClause + " " + GROUP_BY + " ORDER BY " + orderBy + " " + sort + " LIMIT " + offset + ", " + limit;
         try {
             ServiceLogger.LOGGER.info("preparing statement");
             PreparedStatement statement = MovieService.getCon().prepareStatement(query);
