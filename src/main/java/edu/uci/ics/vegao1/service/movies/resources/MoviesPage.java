@@ -73,7 +73,13 @@ public class MoviesPage {
 
         ResponseModel emailCheck = UserValidations.validateEmail(email);
         if (emailCheck.equals(ResponseModel.VALID_REQUEST)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(MovieRecords.hideMovie(id)).build();
+            GenericResponseModel genericResponseModel = UserRecords.verifyPrivilege(email);
+            boolean userIsPrivileged = UserRecords.isPrivileged(genericResponseModel);
+            if (userIsPrivileged) {
+                return Response.status(Response.Status.BAD_REQUEST).entity(MovieRecords.hideMovie(id)).build();
+            } else {
+                return Response.status(Response.Status.OK).entity(genericResponseModel).build();
+            }
         } else {
             return Response.status(Response.Status.BAD_REQUEST).entity(emailCheck).build();
         }
