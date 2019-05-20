@@ -2,9 +2,11 @@ package edu.uci.ics.vegao1.service.movies.records;
 
 import edu.uci.ics.vegao1.service.movies.MovieService;
 import edu.uci.ics.vegao1.service.movies.logger.ServiceLogger;
+import edu.uci.ics.vegao1.service.movies.models.ResponseModel;
 import edu.uci.ics.vegao1.service.movies.models.SearchFullResponseModel;
 import edu.uci.ics.vegao1.service.movies.models.SearchRequestModel;
 import edu.uci.ics.vegao1.service.movies.models.SearchResponseModel;
+import edu.uci.ics.vegao1.service.movies.util.Db;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -45,6 +47,11 @@ public class MovieRecords {
                     "  AND genres_in_movies.movieId = movies.id\n" +
                     "  AND genres.id = genres_in_movies.genreId\n" +
                     "GROUP BY movies.id\n";
+
+    private static final String HIDE_MOVIE_STATMENT = "" +
+            "UPDATE movies\n" +
+            "SET hidden = 1\n" +
+            "WHERE id = ? ;";
 
     public static SearchResponseModel searchMovies(SearchRequestModel request, boolean showHidden) {
         ServiceLogger.LOGGER.info("searchMovies");
@@ -156,6 +163,15 @@ public class MovieRecords {
 
         } catch (Exception e) {
             ServiceLogger.LOGGER.info("Unable to search movies: " + e.getClass() + e.getCause().getLocalizedMessage());
+        }
+    }
+
+    public static ResponseModel hideMovie(String id) throws SQLException {
+        boolean movieHid = Db.executeStatement(HIDE_MOVIE_STATMENT, id);
+        if (movieHid) {
+            return ResponseModel.MOVIE_SUCCESSFULLY_REMOVED;
+        } else {
+            return ResponseModel.MOVIE_ALREADY_REMOVED;
         }
     }
 
