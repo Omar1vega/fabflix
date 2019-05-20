@@ -150,7 +150,7 @@ public class GatewayService {
 
     private void connectToDatabase() {
         // Initialize connection pool
-        conPool = new ConnectionPool(gatewayConfigs.DEFAULT_CONNECTIONS,
+        conPool = new ConnectionPool(gatewayConfigs.getDbConnections(),
                 gatewayConfigs.getDbDriver(),
                 gatewayConfigs.getDbUrl(),
                 gatewayConfigs.getDbUsername(),

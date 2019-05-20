@@ -22,6 +22,7 @@ public class GatewayConfigs {
     private int port;
     private String path;
     private int requestDelay;
+    private int numThreads;
     // Logger configs
     private String outputDir;
     private String outputFile;
@@ -87,6 +88,14 @@ public class GatewayConfigs {
                 System.err.println(GatewayService.ANSI_RED + "Request delay not found in configuration file. Using default." + GatewayService.ANSI_RESET);
             } else {
                 System.err.println("Request Delay: " + requestDelay);
+            }
+
+            numThreads = Integer.parseInt(cm.getGatewayConfig().get("numThreads"));
+            if (numThreads == 0) {
+                numThreads = 3;
+                System.err.println(GatewayService.ANSI_RED + "numThreads not found in configuration file. Using default." + GatewayService.ANSI_RESET);
+            } else {
+                System.err.println("numThreads: " + numThreads);
             }
 
             // Set logger configs
@@ -218,6 +227,18 @@ public class GatewayConfigs {
 
     public String getOutputFile() {
         return outputFile;
+    }
+
+    public int getRequestDelay() {
+        return requestDelay;
+    }
+
+    public int getNumThreads() {
+        return numThreads;
+    }
+
+    public int getDbConnections() {
+        return dbConnections;
     }
 
     public String getDbUsername() {
