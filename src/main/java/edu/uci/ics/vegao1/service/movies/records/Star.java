@@ -2,13 +2,20 @@ package edu.uci.ics.vegao1.service.movies.records;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import javax.ws.rs.QueryParam;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Star {
 
     //        “Stars”: [{“id”:”nm0000288”, “name”: “Christian Bale”, “birthYear”: 1974}]
-    private String id;
     private String name;
+    @QueryParam("name")
+    private String id;
+    @QueryParam("birthYear")
     private Integer birthYear;
+
+    public Star() {
+    }
 
     public Star(String id, String name) {
         this.id = id;

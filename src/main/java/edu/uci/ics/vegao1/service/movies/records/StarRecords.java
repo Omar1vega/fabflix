@@ -2,13 +2,16 @@ package edu.uci.ics.vegao1.service.movies.records;
 
 import edu.uci.ics.vegao1.service.movies.MovieService;
 import edu.uci.ics.vegao1.service.movies.logger.ServiceLogger;
+import edu.uci.ics.vegao1.service.movies.models.ResponseModel;
 import edu.uci.ics.vegao1.service.movies.models.StarRequestModel;
 import edu.uci.ics.vegao1.service.movies.models.StarResponseModel;
+import edu.uci.ics.vegao1.service.movies.util.Db;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class StarRecords {
@@ -74,6 +77,19 @@ public class StarRecords {
         return null;
     }
 
+    public static ResponseModel addStar(Star star) throws SQLException {
+        Integer birthYear = star.getBirthYear() != null && star.getBirthYear() > Calendar.getInstance().get(Calendar.YEAR) ? null : star.getBirthYear();
+
+        boolean genreAdded = Db.executeStatement("INSERT INTO stars (stars.id, name, birthYear)\n" +
+                "SELECT concat('ss', LPAD(max(cast(substring(stars.id, 3) AS DECIMAL)) + 1, 7, '0')), ?, ? " +
+                "FROM stars\n" +
+                "WHERE id LIKE 'ss%';", star.getName(), birthYear);
+        if (genreAdded) {
+            return ResponseModel.STAR_SUCCESSFULLY_ADDED;
+        }
+        return ResponseModel.STAR_COULD_NOT_BE_ADDED;
+    }
+
     private static boolean isValid(String s) {
         return s != null && !s.trim().isEmpty();
     }
@@ -91,4 +107,6 @@ public class StarRecords {
         ServiceLogger.LOGGER.info("String is NOT valid, ret val:" + "%%");
         return "%%";
     }
+
+
 }
