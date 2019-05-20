@@ -181,6 +181,14 @@ public class MovieRecords {
         return new GenreResponseModel(ResponseModel.GENRES_SUCCESSFULLY_RETRIEVED, genres);
     }
 
+    public static ResponseModel addGenre(Genre genre) throws SQLException {
+        boolean genreAdded = Db.executeStatement("INSERT INTO genres (name) VALUES (?)", genre.getName());
+        if (genreAdded) {
+            return ResponseModel.GENRE_SUCCESSFULLY_ADDED;
+        }
+        return ResponseModel.GENRE_COULD_NOT_BE_ADDED;
+    }
+
     private static boolean isValid(String s) {
         return s != null && !s.trim().isEmpty();
     }
