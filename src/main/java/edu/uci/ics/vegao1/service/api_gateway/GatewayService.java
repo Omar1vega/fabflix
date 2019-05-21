@@ -39,6 +39,10 @@ public class GatewayService {
         gatewayService.initService(args);
     }
 
+    public static ConnectionPool getConPool() {
+        return conPool;
+    }
+
     private void initService(String[] args) {
         // Validate arguments
         validateArguments(args);
