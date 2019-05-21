@@ -13,4 +13,28 @@ public class ClientRequest {
     public ClientRequest() {
 
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getSessionID() {
+        return sessionID;
+    }
+
+    public String getTransactionID() {
+        return transactionID;
+    }
+
+    public RequestModel getRequest() {
+        return request;
+    }
+
+    public String getURI() {
+        return URI;
+    }
+
+    public String getEndpoint() {
+        return endpoint;
+    }
 }
