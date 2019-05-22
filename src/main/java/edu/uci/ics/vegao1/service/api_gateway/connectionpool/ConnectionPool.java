@@ -29,15 +29,18 @@ public class ConnectionPool {
     }
 
     public Connection requestCon() {
+        ServiceLogger.LOGGER.info("Db connection requested");
         if (connections.isEmpty()) {
+            ServiceLogger.LOGGER.info("No Db connections are available, creating a new one");
             connections.add(createConnection());
         }
+        ServiceLogger.LOGGER.info("Db connection granted");
         return connections.pop();
     }
 
     public void releaseCon(Connection con) {
+        ServiceLogger.LOGGER.info("Db connection returned to pool");
         connections.addLast(con);
-
     }
 
     private Connection createConnection() {
