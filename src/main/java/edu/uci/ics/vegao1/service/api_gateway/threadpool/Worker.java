@@ -1,11 +1,11 @@
 package edu.uci.ics.vegao1.service.api_gateway.threadpool;
 
 import edu.uci.ics.vegao1.service.api_gateway.logger.ServiceLogger;
-import edu.uci.ics.vegao1.service.api_gateway.util.Db;
 import org.glassfish.jersey.jackson.JacksonFeature;
 
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
 
@@ -27,7 +27,7 @@ public class Worker extends Thread {
         if (request == null) {
             return;
         }
-
+        ServiceLogger.LOGGER.info("Processing request: " + request);
         Client client = ClientBuilder.newClient();
         client.register(JacksonFeature.class);
 
@@ -41,17 +41,39 @@ public class Worker extends Thread {
         WebTarget webTarget = client.target(idmUri).path(idmEndpointPath);
 
         ServiceLogger.LOGGER.info("Starting invocation builder...");
+
+        MultivaluedMap<String, String> queryParameters = request.getQueryParameters();
+        for (String parameter : queryParameters.keySet()) {
+            ServiceLogger.LOGGER.info("Setting query parameter: " + parameter + " = " + queryParameters.getFirst(parameter));
+            webTarget = webTarget.queryParam(parameter, queryParameters.getFirst(parameter));
+        }
+
         Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
 
         ServiceLogger.LOGGER.info("Setting payload of the request");
         // Send the request and save it to a Response
+        ServiceLogger.LOGGER.info("Payload: " + request.getPayload());
+
+        Entity entity = Entity.entity(request.getPayload(), request.getMediaType());
+        Invocation.Builder invocationBuilder2 = invocationBuilder.headers(request.getRequestHeaders());
+
+        ServiceLogger.LOGGER.info("uri: " + webTarget.getUri());
+
+
+        Invocation invocation = invocationBuilder2.build(request.getMethod(), entity);
+        ServiceLogger.LOGGER.info("");
         ServiceLogger.LOGGER.info("Sending request...");
-        Response response = invocationBuilder.post(Entity.entity(request.getRequest(), MediaType.APPLICATION_JSON));
+        Response response = invocation.invoke();
+
         ServiceLogger.LOGGER.info("Sent!");
 
-        String responseJson = response.getEntity().toString();
+        ServiceLogger.LOGGER.info("res: " + response.getStatus());
 
-        Db.executeStatement(INSERT_RESPONSE_STATMENT, "");
+
+        String responseJson = response.readEntity(String.class);
+
+        ServiceLogger.LOGGER.info("resp: " + responseJson);
+//        Db.executeStatement(INSERT_RESPONSE_STATMENT, "");
     }
 
     @Override
