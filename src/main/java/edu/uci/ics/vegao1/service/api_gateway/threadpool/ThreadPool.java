@@ -19,7 +19,7 @@ public class ThreadPool {
 
     }
 
-    public ClientRequest remove() {
+    public ClientRequest remove() throws InterruptedException {
         return queue.dequeue();
     }
 

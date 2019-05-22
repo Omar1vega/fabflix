@@ -17,20 +17,22 @@ public class ClientRequestQueue {
             tail.setNext(newTail);
         }
         this.tail = newTail;
+        this.notify();
     }
 
-    public synchronized ClientRequest dequeue() {
-        if (this.isEmpty()) {
-            return null;
+    public synchronized ClientRequest dequeue() throws InterruptedException {
+        while (true) {
+            if (!this.isEmpty()) {
+                ListNode currentHead = this.head;
+                this.head = currentHead.getNext();
+
+                return currentHead.getClientRequest();
+            }
+            this.wait();
         }
-
-        ListNode currentHead = this.head;
-        this.head = currentHead.getNext();
-
-        return currentHead.getClientRequest();
     }
 
-    boolean isEmpty() {
+    synchronized boolean isEmpty() {
         return head == null || tail == null;
     }
 }

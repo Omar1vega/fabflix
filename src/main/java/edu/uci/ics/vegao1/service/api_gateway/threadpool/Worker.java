@@ -59,7 +59,7 @@ public class Worker extends Thread {
         while (true) {
             try {
                 process(threadPool.remove());
-            } catch (SQLException e) {
+            } catch (SQLException | InterruptedException e) {
                 e.printStackTrace();
             }
         }
