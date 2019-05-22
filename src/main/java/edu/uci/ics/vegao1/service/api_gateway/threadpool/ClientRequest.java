@@ -37,4 +37,28 @@ public class ClientRequest {
     public String getEndpoint() {
         return endpoint;
     }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setSessionID(String sessionID) {
+        this.sessionID = sessionID;
+    }
+
+    public void setTransactionID(String transactionID) {
+        this.transactionID = transactionID;
+    }
+
+    public void setRequest(RequestModel request) {
+        this.request = request;
+    }
+
+    public void setURI(String URI) {
+        this.URI = URI;
+    }
+
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
+    }
 }
