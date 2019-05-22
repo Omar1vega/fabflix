@@ -5,11 +5,13 @@ public class ThreadPool {
     private Worker[] workers;
     private ClientRequestQueue queue;
 
-    public ThreadPool(int numWorkers) {
+    public ThreadPool(int numWorkers, ClientRequestQueue queue) {
+        this.queue = queue;
         this.numWorkers = numWorkers;
         workers = new Worker[numWorkers];
         for (int i = 0; i < numWorkers; i++) {
             workers[i] = Worker.CreateWorker(i, this);
+            workers[i].start();
         }
 
     }
