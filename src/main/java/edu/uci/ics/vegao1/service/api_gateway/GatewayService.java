@@ -32,6 +32,11 @@ public class GatewayService {
 
     private static ConnectionPool conPool;
     private static ThreadPool threadPool;
+
+    public static GatewayConfigs getGatewayConfigs() {
+        return gatewayConfigs;
+    }
+
     private static GatewayConfigs gatewayConfigs;
     private static IDMConfigs idmConfigs;
     private static MovieConfigs movieConfigs;
