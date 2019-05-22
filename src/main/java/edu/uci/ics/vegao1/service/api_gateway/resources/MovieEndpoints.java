@@ -1,23 +1,34 @@
 package edu.uci.ics.vegao1.service.api_gateway.resources;
 
+import edu.uci.ics.vegao1.service.api_gateway.GatewayService;
+import edu.uci.ics.vegao1.service.api_gateway.threadpool.ClientRequest;
+import edu.uci.ics.vegao1.service.api_gateway.util.TransactionIDGenerator;
+
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
 
 @Path("movies")
 public class MovieEndpoints {
+    private String uri = GatewayService.getMovieConfigs().getMoviesUri();
+
     @Path("search")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response searchMovieRequest() {
+    public Response searchMovieRequest(@Context Request requestInfo, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, String payload) {
+        ClientRequest request = new ClientRequest(TransactionIDGenerator.generateTransactionID(), payload, uri, uriInfo.getPathSegments(), requestInfo.getMethod(), httpHeaders.getAcceptableMediaTypes(), httpHeaders.getRequestHeaders(), uriInfo.getQueryParameters());
+        GatewayService.getThreadPool().getQueue().enqueue(request);
+
         return Response.status(Status.NO_CONTENT).build();
     }
 
     @Path("get/{movieid}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMovieRequest() {
+    public Response getMovieRequest(@Context Request requestInfo, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, String payload) {
+        ClientRequest request = new ClientRequest(TransactionIDGenerator.generateTransactionID(), payload, uri, uriInfo.getPathSegments(), requestInfo.getMethod(), httpHeaders.getAcceptableMediaTypes(), httpHeaders.getRequestHeaders(), uriInfo.getQueryParameters());
+        GatewayService.getThreadPool().getQueue().enqueue(request);
+
         return Response.status(Status.NO_CONTENT).build();
     }
 
@@ -39,7 +50,10 @@ public class MovieEndpoints {
     @Path("genre")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getGenresRequest() {
+    public Response getGenresRequest(@Context Request requestInfo, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, String payload) {
+        ClientRequest request = new ClientRequest(TransactionIDGenerator.generateTransactionID(), payload, uri, uriInfo.getPathSegments(), requestInfo.getMethod(), httpHeaders.getAcceptableMediaTypes(), httpHeaders.getRequestHeaders(), uriInfo.getQueryParameters());
+        GatewayService.getThreadPool().getQueue().enqueue(request);
+
         return Response.status(Status.NO_CONTENT).build();
     }
 
