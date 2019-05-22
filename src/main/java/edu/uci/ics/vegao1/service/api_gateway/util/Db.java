@@ -15,12 +15,16 @@ public class Db {
 
     public static boolean executeStatement(String statement, Object... parameters) throws SQLException {
         PreparedStatement preparedStatement = prepareStatement(statement, parameters);
-        return preparedStatement.executeUpdate() > 0;
+        boolean updateSuccessful = preparedStatement.executeUpdate() > 0;
+        GatewayService.getConPool().releaseCon(preparedStatement.getConnection());
+        return updateSuccessful;
     }
 
     public static ResultSet executeStatementForResult(String statement, Object... parameters) throws SQLException {
         PreparedStatement preparedStatement = prepareStatement(statement, parameters);
-        return preparedStatement.executeQuery();
+        ResultSet resultSet = preparedStatement.executeQuery();
+        GatewayService.getConPool().releaseCon(preparedStatement.getConnection());
+        return resultSet;
     }
 
     private static PreparedStatement prepareStatement(String statement, Object... parameters) throws SQLException {
