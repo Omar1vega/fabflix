@@ -16,10 +16,11 @@ public class MovieEndpoints {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response searchMovieRequest(@Context Request requestInfo, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, String payload) {
-        ClientRequest request = new ClientRequest(TransactionIDGenerator.generateTransactionID(), payload, uri, uriInfo.getPathSegments(), requestInfo.getMethod(), httpHeaders.getAcceptableMediaTypes(), httpHeaders.getRequestHeaders(), uriInfo.getQueryParameters());
+        String transactionID = TransactionIDGenerator.generateTransactionID();
+        ClientRequest request = new ClientRequest(transactionID, payload, uri, uriInfo.getPathSegments(), requestInfo.getMethod(), httpHeaders.getAcceptableMediaTypes(), httpHeaders.getRequestHeaders(), uriInfo.getQueryParameters());
         GatewayService.getThreadPool().getQueue().enqueue(request);
 
-        return Response.status(Status.NO_CONTENT).build();
+        return Response.status(Status.NO_CONTENT).header("transactionID", transactionID).header("requestDelay", GatewayService.getGatewayConfigs().getRequestDelay()).build();
     }
 
     @Path("get/{movieid}")
