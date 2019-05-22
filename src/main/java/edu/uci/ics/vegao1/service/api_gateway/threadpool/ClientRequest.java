@@ -1,34 +1,45 @@
 package edu.uci.ics.vegao1.service.api_gateway.threadpool;
 
-import edu.uci.ics.vegao1.service.api_gateway.models.RequestModel;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.PathSegment;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientRequest {
-    private String email;
-    private String sessionID;
     private String transactionID;
-    private RequestModel request;
+    private String payload;
     private String URI;
     private String endpoint;
+    private String method;
+    private List<MediaType> mediaTypes;
+    private MultivaluedMap<String, String> requestHeaders;
+    private MultivaluedMap<String, String> queryParameters;
 
-    public ClientRequest() {
-
+    public ClientRequest(String transactionID, String payload, String URI, List<PathSegment> pathSegments, String method, List<MediaType> mediaTypes, MultivaluedMap<String, String> requestHeaders, MultivaluedMap<String, String> queryParameters) {
+        this.transactionID = transactionID;
+        this.payload = payload.trim().isEmpty() ? null : payload;
+        this.URI = URI;
+        List<PathSegment> segments = new ArrayList<>(pathSegments);
+        segments.remove(0);
+        StringBuilder endpointBuilder = new StringBuilder();
+        for (PathSegment pathSegment : segments) {
+            endpointBuilder.append(pathSegment);
+            endpointBuilder.append("/");
+        }
+        this.endpoint = endpointBuilder.toString();
+        this.method = method;
+        this.mediaTypes = mediaTypes;
+        this.requestHeaders = requestHeaders;
+        this.queryParameters = queryParameters;
     }
 
-    public String getEmail() {
-        return email;
+
+    public String getPayload() {
+        return payload;
     }
 
-    public String getSessionID() {
-        return sessionID;
-    }
-
-    public String getTransactionID() {
-        return transactionID;
-    }
-
-    public RequestModel getRequest() {
-        return request;
-    }
 
     public String getURI() {
         return URI;
@@ -38,27 +49,41 @@ public class ClientRequest {
         return endpoint;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public MediaType getMediaType() {
+        if (mediaTypes == null || mediaTypes.isEmpty()) {
+            return MediaType.APPLICATION_JSON_TYPE;
+        }
+        return mediaTypes.get(0);
     }
 
-    public void setSessionID(String sessionID) {
-        this.sessionID = sessionID;
+
+    public MultivaluedMap<String, Object> getRequestHeaders() {
+        MultivaluedHashMap<String, Object> map = new MultivaluedHashMap<>();
+        for (String key : requestHeaders.keySet()) {
+            map.put(key, new ArrayList<>(requestHeaders.get(key)));
+        }
+        return map;
     }
 
-    public void setTransactionID(String transactionID) {
-        this.transactionID = transactionID;
+    public String getMethod() {
+        return method;
     }
 
-    public void setRequest(RequestModel request) {
-        this.request = request;
+    @Override
+    public String toString() {
+        return "ClientRequest{" +
+                "transactionID='" + transactionID + '\'' +
+                ", payload='" + payload + '\'' +
+                ", URI='" + URI + '\'' +
+                ", endpoint='" + endpoint + '\'' +
+                ", method='" + method + '\'' +
+                ", mediaTypes=" + mediaTypes +
+                ", requestHeaders=" + requestHeaders +
+                ", queryParameters=" + queryParameters +
+                '}';
     }
 
-    public void setURI(String URI) {
-        this.URI = URI;
-    }
-
-    public void setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
+    public MultivaluedMap<String, String> getQueryParameters() {
+        return queryParameters;
     }
 }
