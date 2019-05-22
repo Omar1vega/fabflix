@@ -5,6 +5,8 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import edu.uci.ics.vegao1.service.api_gateway.configs.*;
 import edu.uci.ics.vegao1.service.api_gateway.connectionpool.ConnectionPool;
 import edu.uci.ics.vegao1.service.api_gateway.logger.ServiceLogger;
+import edu.uci.ics.vegao1.service.api_gateway.threadpool.ClientRequestQueue;
+import edu.uci.ics.vegao1.service.api_gateway.threadpool.ThreadPool;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.jackson.JacksonFeature;
@@ -29,10 +31,23 @@ public class GatewayService {
     public static GatewayService gatewayService;
 
     private static ConnectionPool conPool;
-    private GatewayConfigs gatewayConfigs;
-    private IDMConfigs idmConfigs;
-    private MovieConfigs movieConfigs;
-    private BillingConfigs billingConfigs;
+    private static ThreadPool threadPool;
+    private static GatewayConfigs gatewayConfigs;
+    private static IDMConfigs idmConfigs;
+    private static MovieConfigs movieConfigs;
+    private static BillingConfigs billingConfigs;
+
+    public static BillingConfigs getBillingConfigs() {
+        return billingConfigs;
+    }
+
+    public static ThreadPool getThreadPool() {
+        return threadPool;
+    }
+
+    public static MovieConfigs getMovieConfigs() {
+        return movieConfigs;
+    }
 
     public static void main(String[] args) {
         gatewayService = new GatewayService();
@@ -41,6 +56,10 @@ public class GatewayService {
 
     public static ConnectionPool getConPool() {
         return conPool;
+    }
+
+    public IDMConfigs getIdmConfigs() {
+        return idmConfigs;
     }
 
     private void initService(String[] args) {
@@ -60,6 +79,9 @@ public class GatewayService {
 
         // Create a connection to the database
         connectToDatabase();
+
+        // Initialize thread pool
+        initThreadPool();
 
         // Initialize HTTP sever
         initHTTPServer();
@@ -159,6 +181,13 @@ public class GatewayService {
                 gatewayConfigs.getDbUrl(),
                 gatewayConfigs.getDbUsername(),
                 gatewayConfigs.getDbPassword());
+    }
+
+    private void initThreadPool() {
+        // Initialize thread pool
+        ServiceLogger.LOGGER.config("Initializing thread pool.");
+        threadPool = new ThreadPool(gatewayConfigs.getNumThreads(), new ClientRequestQueue());
+        ServiceLogger.LOGGER.config(ANSI_GREEN + "Initializing thread pool." + ANSI_RESET);
     }
 
     private void initHTTPServer() {
