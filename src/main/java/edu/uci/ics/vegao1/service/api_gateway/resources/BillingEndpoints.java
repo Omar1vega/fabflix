@@ -16,12 +16,14 @@ public class BillingEndpoints {
     private String uri = GatewayService.getBillingConfigs().getBillingUri();
 
     private Response processRequest(Request requestInfo, UriInfo uriInfo, HttpHeaders httpHeaders, String payload) {
+        String sessionId = httpHeaders.getHeaderString("sessionID");
         String transactionID = TransactionIDGenerator.generateTransactionID();
         ClientRequest request = new ClientRequest(transactionID, payload, uri, uriInfo.getPathSegments(), requestInfo.getMethod(), httpHeaders.getAcceptableMediaTypes(), httpHeaders.getRequestHeaders(), uriInfo.getQueryParameters());
         GatewayService.getThreadPool().getQueue().enqueue(request);
 
-        return Response.status(Status.NO_CONTENT).header("transactionID", transactionID).header("requestDelay", GatewayService.getGatewayConfigs().getRequestDelay()).build();
+        return Response.status(Status.NO_CONTENT).header("transactionID", transactionID).header("sessionID", sessionId).header("requestDelay", GatewayService.getGatewayConfigs().getRequestDelay()).build();
     }
+
     @Path("cart/insert")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
