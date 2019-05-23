@@ -53,10 +53,7 @@ public class MovieEndpoints {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getGenresRequest(@Context Request requestInfo, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, String payload) {
-        ClientRequest request = new ClientRequest(TransactionIDGenerator.generateTransactionID(), payload, uri, uriInfo.getPathSegments(), requestInfo.getMethod(), httpHeaders.getAcceptableMediaTypes(), httpHeaders.getRequestHeaders(), uriInfo.getQueryParameters());
-        GatewayService.getThreadPool().getQueue().enqueue(request);
-
-        return Response.status(Status.NO_CONTENT).build();
+        return processRequest(requestInfo, uriInfo, httpHeaders, payload);
     }
 
     @Path("genre/add")
