@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public class Worker extends Thread {
     private static final String INSERT_RESPONSE_STATEMENT = "" +
-            "INSERT INTO responses (transactionid, email, sessionid, respoonse, httpstatus)\n" +
+            "INSERT INTO responses (transactionid, email, sessionid, response, httpstatus)\n" +
             "VALUES (?, ?, ?, ?, ?);";
     private int id;
     private ThreadPool threadPool;
@@ -71,8 +71,8 @@ public class Worker extends Thread {
         String responseJson = response.readEntity(String.class);
         ServiceLogger.LOGGER.info("response: " + responseJson);
         String transactionID = request.getTransactionID();
-        String email = request.getQueryParameters().getFirst("email");
-        String sessionId = request.getQueryParameters().getFirst("sessionID");
+        String email = request.getRequestHeaders().containsKey("email") ? request.getRequestHeaders().getFirst("email").toString() : null;
+        String sessionId = request.getRequestHeaders().containsKey("sessionid") ? request.getRequestHeaders().getFirst("sessionid").toString() : null;
         int status = response.getStatus();
 
         Db.executeStatement(INSERT_RESPONSE_STATEMENT, transactionID, email, sessionId, responseJson, status);
