@@ -63,7 +63,7 @@ public class GatewayService {
         return conPool;
     }
 
-    public IDMConfigs getIdmConfigs() {
+    public static IDMConfigs getIdmConfigs() {
         return idmConfigs;
     }
 
