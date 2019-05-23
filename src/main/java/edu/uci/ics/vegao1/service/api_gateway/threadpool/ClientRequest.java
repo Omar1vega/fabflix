@@ -36,20 +36,20 @@ public class ClientRequest {
     }
 
 
-    public String getPayload() {
+    String getPayload() {
         return payload;
     }
 
 
-    public String getURI() {
+    String getURI() {
         return URI;
     }
 
-    public String getEndpoint() {
+    String getEndpoint() {
         return endpoint;
     }
 
-    public MediaType getMediaType() {
+    MediaType getMediaType() {
         if (mediaTypes == null || mediaTypes.isEmpty()) {
             return MediaType.APPLICATION_JSON_TYPE;
         }
@@ -57,7 +57,7 @@ public class ClientRequest {
     }
 
 
-    public MultivaluedMap<String, Object> getRequestHeaders() {
+    MultivaluedMap<String, Object> getRequestHeaders() {
         MultivaluedHashMap<String, Object> map = new MultivaluedHashMap<>();
         for (String key : requestHeaders.keySet()) {
             map.put(key, new ArrayList<>(requestHeaders.get(key)));
@@ -65,8 +65,12 @@ public class ClientRequest {
         return map;
     }
 
-    public String getMethod() {
+    String getMethod() {
         return method;
+    }
+
+    String getTransactionID() {
+        return transactionID;
     }
 
     @Override
@@ -83,7 +87,7 @@ public class ClientRequest {
                 '}';
     }
 
-    public MultivaluedMap<String, String> getQueryParameters() {
+    MultivaluedMap<String, String> getQueryParameters() {
         return queryParameters;
     }
 }
