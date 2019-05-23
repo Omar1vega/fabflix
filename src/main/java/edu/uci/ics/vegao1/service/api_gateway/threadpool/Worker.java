@@ -1,6 +1,7 @@
 package edu.uci.ics.vegao1.service.api_gateway.threadpool;
 
 import edu.uci.ics.vegao1.service.api_gateway.logger.ServiceLogger;
+import edu.uci.ics.vegao1.service.api_gateway.util.Db;
 import org.glassfish.jersey.jackson.JacksonFeature;
 
 import javax.ws.rs.client.*;
@@ -10,20 +11,22 @@ import javax.ws.rs.core.Response;
 import java.sql.SQLException;
 
 public class Worker extends Thread {
-    private static final String INSERT_RESPONSE_STATMENT = "";
-    int id;
-    ThreadPool threadPool;
+    private static final String INSERT_RESPONSE_STATEMENT = "" +
+            "INSERT INTO responses (transactionid, email, sessionid, respoonse, httpstatus)\n" +
+            "VALUES (?, ?, ?, ?, ?);";
+    private int id;
+    private ThreadPool threadPool;
 
     private Worker(int id, ThreadPool threadPool) {
         this.id = id;
         this.threadPool = threadPool;
     }
 
-    public static Worker CreateWorker(int id, ThreadPool threadPool) {
+    static Worker CreateWorker(int id, ThreadPool threadPool) {
         return new Worker(id, threadPool);
     }
 
-    public void process(ClientRequest request) throws SQLException {
+    private void process(ClientRequest request) throws SQLException {
         if (request == null) {
             return;
         }
@@ -51,8 +54,6 @@ public class Worker extends Thread {
         Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
 
         ServiceLogger.LOGGER.info("Setting payload of the request");
-        // Send the request and save it to a Response
-        ServiceLogger.LOGGER.info("Payload: " + request.getPayload());
 
         Entity entity = Entity.entity(request.getPayload(), request.getMediaType());
         Invocation.Builder invocationBuilder2 = invocationBuilder.headers(request.getRequestHeaders());
@@ -67,13 +68,14 @@ public class Worker extends Thread {
 
         ServiceLogger.LOGGER.info("Sent!");
 
-        ServiceLogger.LOGGER.info("res: " + response.getStatus());
-
-
         String responseJson = response.readEntity(String.class);
+        ServiceLogger.LOGGER.info("response: " + responseJson);
+        String transactionID = request.getTransactionID();
+        String email = request.getQueryParameters().getFirst("email");
+        String sessionId = request.getQueryParameters().getFirst("sessionID");
+        int status = response.getStatus();
 
-        ServiceLogger.LOGGER.info("resp: " + responseJson);
-//        Db.executeStatement(INSERT_RESPONSE_STATMENT, "");
+        Db.executeStatement(INSERT_RESPONSE_STATEMENT, transactionID, email, sessionId, responseJson, status);
     }
 
     @Override
