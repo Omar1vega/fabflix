@@ -28,7 +28,7 @@ public class ConnectionPool {
         }
     }
 
-    public Connection requestCon() {
+    public synchronized Connection requestCon() {
         ServiceLogger.LOGGER.info("Db connection requested");
         if (connections.isEmpty()) {
             ServiceLogger.LOGGER.info("No Db connections are available, creating a new one");
@@ -38,7 +38,7 @@ public class ConnectionPool {
         return connections.pop();
     }
 
-    public void releaseCon(Connection con) {
+    public synchronized void releaseCon(Connection con) {
         ServiceLogger.LOGGER.info("Db connection returned to pool");
         connections.addLast(con);
     }
